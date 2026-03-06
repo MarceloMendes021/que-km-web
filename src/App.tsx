@@ -1,8 +1,9 @@
+import { appName } from "@/shared/lib/test";
+
 function App() {
   return (
-    <div>
-      <h1>Que KM é esse?</h1>
-      <p>Frontend em construção.</p>
+    <div className="min-h-screen flex items-center justify-center bg-zinc-900">
+      <h1 className="text-3xl font-bold text-white">{appName}</h1>
     </div>
   );
 }
