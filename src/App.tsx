@@ -1,10 +1,11 @@
-import { appName } from "@/shared/lib/test";
+import { AppRouter } from "@/app/router/AppRouter";
+import { AppProviders } from "@/app/providers/AppProviders";
 
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-900">
-      <h1 className="text-3xl font-bold text-white">{appName}</h1>
-    </div>
+    <AppProviders>
+      <AppRouter />
+    </AppProviders>
   );
 }
 
