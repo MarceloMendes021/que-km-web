@@ -11,7 +11,7 @@ export function LoginPage() {
     <main className="h-dvh overflow-hidden bg-(--background) px-6 text-(--text-primary)">
       <div className="mx-auto flex h-full w-full max-w-md flex-col">
         <section className="flex flex-col items-center gap-1 pt-20">
-          <div className="flex h-35 w-35 items-center justify-center">
+          <div className="flex h-35 w-38 items-center justify-center">
             <img src="/Logo-Que-KM-é-esse.png" alt="Logo Que KM é esse" className="h-full w-full object-contain" />
           </div>
 
