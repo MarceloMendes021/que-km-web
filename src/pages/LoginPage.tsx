@@ -8,7 +8,7 @@ export function LoginPage() {
   }
 
   return (
-    <main className="h-screen overflow-hidden bg-(--background) px-6 text-(--text-primary)">
+    <main className="h-dvh overflow-hidden bg-(--background) px-6 text-(--text-primary)">
       <div className="mx-auto flex h-full w-full max-w-md flex-col">
         <section className="flex flex-col items-center gap-1 pt-20">
           <div className="flex h-35 w-35 items-center justify-center">
@@ -50,7 +50,7 @@ export function LoginPage() {
           </div>
         </section>
 
-        <footer className="mt-auto py-4 text-center">
+        <footer className="mt-auto pt-2 pb-3 text-center">
           <p className="text-[12px] text-(--text-secondary)">Ao continuar, você concorda com os termos de uso e a política de privacidade.</p>
         </footer>
       </div>
