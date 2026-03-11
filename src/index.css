@@ -21,10 +21,15 @@
   --font-size-body: 14px;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body {
   margin: 0;
   min-width: 320px;
-  min-height: 100vh;
   background-color: var(--background);
   color: var(--text-primary);
   font-family:
