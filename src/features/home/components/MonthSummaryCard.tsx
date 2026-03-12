@@ -43,7 +43,7 @@ export function MonthSummaryCard({ amount, monthLabel, trend }: MonthSummaryCard
       - Exibe o resultado acumulado do mês
       - Varia visualmente conforme a tendência atual
     */
-    <section className="rounded-(--radius-card) border border-(--border) bg-(--surface) p-5">
+    <section className="rounded-(--radius-card) border border-(--border) bg-(--surface) py-5 px-7">
       {/* Linha superior do card */}
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -59,7 +59,7 @@ export function MonthSummaryCard({ amount, monthLabel, trend }: MonthSummaryCard
       </div>
 
       {/* Valor financeiro principal do card */}
-      <p className={`mt-5 text-[32px] font-bold ${trendConfig.valueColor}`}>{formatCurrency(amount)}</p>
+      <p className={`mt-4 text-[32px] font-bold ${trendConfig.valueColor}`}>{formatCurrency(amount)}</p>
 
       {/* Texto de apoio conforme tendência */}
       <p className={`mt-1 text-sm ${trendConfig.helperTextColor}`}>{trendConfig.helperText}</p>
