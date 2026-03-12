@@ -4,7 +4,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export function AppHeader() {
   return (
-    <header className="flex items-center justify-between">
+    <header className="flex items-center justify-between border-b border-(--border) px-6 pb-4 pt-2">
       <img src="/Logo-Que-KM-é-esse.png" alt="Logo Que KM é esse" className=" h-16  w-auto object-contain" />
 
       <Sheet>
