@@ -1,18 +1,24 @@
-import type { ReactNode } from "react";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-type AppHeaderProps = {
-  rightContent?: ReactNode;
-};
-
-export function AppHeader({ rightContent }: AppHeaderProps) {
+export function AppHeader() {
   return (
     <header className="flex items-center justify-between">
-      {/* Logo principal do aplicativo */}
-      <div className="flex items-center">
-        <img src="/Logo-Que-KM-é-esse.png" alt="Logo Que KM é esse" className="h-16 w-auto object-contain " />
-      </div>
+      <img src="/Logo-Que-KM-é-esse.png" alt="Logo Que KM é esse" className=" h-16  w-auto object-contain" />
 
-      <div>{rightContent}</div>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button size="icon" className=" h-11 w-11 ">
+            <Menu className="h-5 w-5 text-(--text-primary)" />
+          </Button>
+        </SheetTrigger>
+
+        <SheetContent side="right">
+          {/* depois entra o conteúdo do menu lateral */}
+          <div>Sidebar content</div>
+        </SheetContent>
+      </Sheet>
     </header>
   );
 }
