@@ -9,7 +9,10 @@ type MonthSummaryCardProps = {
 };
 
 function formatCurrency(value: number) {
-  return `R$ ${value.toFixed(2).replace(".", ",")}`;
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value);
 }
 
 export function MonthSummaryCard({ amount, monthLabel, trend }: MonthSummaryCardProps) {
