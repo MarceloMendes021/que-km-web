@@ -6,6 +6,7 @@ import { KmCalculatorPage } from "@/pages/KmCalculatorPage";
 import { LoginPage } from "@/pages/LoginPage";
 import { WorkdayFinishPage } from "@/pages/WorkdayFinishPage";
 import { WorkdayStartPage } from "@/pages/WorkdayStartPage";
+import { ExpensesPage } from "@/pages/ExpensesPage";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,14 @@ const router = createBrowserRouter([
   {
     path: "/km-calculator",
     element: <KmCalculatorPage />,
+  },
+  {
+    path: "/km-calculator",
+    element: <KmCalculatorPage />,
+  },
+  {
+    path: "/expenses",
+    element: <ExpensesPage />,
   },
 ]);
 
