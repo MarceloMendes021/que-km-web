@@ -16,7 +16,7 @@ export function WorkdayActionButton({ workdayStarted }: WorkdayActionButtonProps
   const buttonColor = workdayStarted ? "bg-red-500 hover:bg-red-600" : "bg-(--primary) hover:bg-(--primary-hover)";
 
   return (
-    <Button asChild className={`w-full h-24 justify-between items-center ${buttonColor}`}>
+    <Button asChild className={`w-full h-26 justify-between items-center ${buttonColor}`}>
       <Link to={route} className="flex w-full px-4">
         <div className="flex flex-col text-left">
           <span className="text-xl font-semibold text-(--text-primary) mb-1">{label}</span>
