@@ -14,9 +14,9 @@ export function UserMenu() {
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <button type="button" className="flex items-center justify-center h-9 w-9 rounded-full">
+        <button type="button" className="flex items-center justify-center h-10 w-10 mr-2 rounded-full">
           {!open && (
-            <Avatar className="h-9 w-9">
+            <Avatar className="h-10 w-10  ">
               <AvatarImage src="/avatar.png" />
               <AvatarFallback>MA</AvatarFallback>
             </Avatar>
@@ -27,7 +27,7 @@ export function UserMenu() {
       <DropdownMenuContent side="top" align="end" sideOffset={-52} className="w-50 bg-(--background) border-(--border) rounded-md shadow-lg ">
         {/* Avatar + saudação */}
         <div className="flex items-center gap-3 px-3 py-3">
-          <Avatar className="h-9 w-9">
+          <Avatar className="h-10 w-10 border-2 border-(--primary) ">
             <AvatarImage src="/avatar.png" />
             <AvatarFallback>MA</AvatarFallback>
           </Avatar>
