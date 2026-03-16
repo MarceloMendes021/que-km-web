@@ -1,14 +1,15 @@
-import { AppHeader } from "@/shared/components/AppHeader";
+import { AppHeader } from "@/shared/layout/AppHeader";
+import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 
 export function ExpensesPage() {
   return (
-    <main className="min-h-dvh bg-(--background) px-6 py-4 text-(--text-primary)">
+    <main className="min-h-dvh bg-(--background) py-4 text-(--text-primary)">
       <AppHeader />
 
-      {/* Conteúdo da página (placeholder por enquanto) */}
-      <section className="mt-6">
+      <section className="mt-4 px-4 space-y-4">
         <p className="text-(--text-secondary)">Expenses page</p>
       </section>
+      <BottomTabBar />
     </main>
   );
 }

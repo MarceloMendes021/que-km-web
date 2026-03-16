@@ -1,7 +1,7 @@
 import { HomeStatCard } from "@/features/home/components/HomeStatCard";
 import { MonthSummaryCard } from "@/features/home/components/MonthSummaryCard";
-import { AppHeader } from "@/shared/components/AppHeader";
-import { BottomTabBar } from "@/shared/components/BottomTabBar";
+import { AppHeader } from "@/shared/layout/AppHeader";
+import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { Card, CardContent } from "@/components/ui/card";
 import { WorkdayActionButton } from "@/features/workday/components/WorkdayActionButton";
 
@@ -24,7 +24,7 @@ export function HomePage() {
         </div>
 
         <Card>
-          <CardContent className="flex flex-col gap-2 px-4 py-1">
+          <CardContent className="flex flex-col gap-1 px-4 py-1">
             <div className="flex items-center justify-between">
               <span className="text-sm text-(--text-secondary)">Dias trabalhados em {capitalizedMonth}</span>
               <span className="text-lg font-semibold text-(--text-primary)">5</span>
