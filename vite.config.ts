@@ -10,7 +10,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["Logo-Que-KM-é-esse.png", "icons/*.svg"],
+      includeAssets: ["Logo-Que-KM-é-esse.png", "icons/*.svg", "icons/*.png"],
       manifest: {
         name: "Que KM é esse?",
         short_name: "Que KM",
@@ -22,16 +22,8 @@ export default defineConfig({
         scope: "/",
         start_url: "/",
         icons: [
-          {
-            src: "Logo-Que-KM-é-esse.png",
-            sizes: "192x192",
-            type: "image/png",
-          },
-          {
-            src: "Logo-Que-KM-é-esse.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
+          { src: "icons/icon-192.png", sizes: "192x192", type: "image/png" },
+          { src: "icons/icon-512.png", sizes: "512x512", type: "image/png" },
         ],
       },
       workbox: {
