@@ -26,7 +26,7 @@ export function PageHeader({ title, subtitle, icon, showBackButton = true }: Pag
       )}
 
       <div className="flex items-start gap-3">
-        {icon && <div className="mt-2 rounded-sm bg-(--primary) p-1 text-white">{icon}</div>}
+        {icon && <div className="mt-2 text-(--primary)">{icon}</div>}
 
         <div className="flex flex-col">
           <h1 className="text-2xl font-semibold text-(--text-primary)">{title}</h1>
