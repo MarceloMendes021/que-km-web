@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2026 (Versão de avaliação) -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="40px" height="40px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 40 40"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:cc="http://creativecommons.org/ns#"
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:svg="http://www.w3.org/2000/svg"
+ xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+ xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+ sodipodi:docname="99-app-logo-2.svg"
+ inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil1 {fill:black;fill-rule:nonzero}
+    .fil0 {fill:url(#id0)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="13.27" y1="13.27" x2="40.02" y2="40.02">
+   <stop offset="0" style="stop-opacity:1; stop-color:#FFDD00"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#FF8200"/>
+  </linearGradient>
+ </defs>
+ <g id="Camada_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <sodipodi:namedview pagecolor="#ffffff" bordercolor="#666666" borderopacity="1" objecttolerance="10" gridtolerance="10" guidetolerance="10" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-width="1600" inkscape:window-height="837" id="namedview14" showgrid="false" inkscape:zoom="1.668772" inkscape:cx="68.076008" inkscape:cy="114.75218" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="LOGO_ANDROID" fit-margin-top="0" fit-margin-left="0" fit-margin-right="0" fit-margin-bottom="0"/>
+  <g id="g13" inkscape:export-filename="G:\Users\suitedoalex\sites\99-app-logo-8.png" inkscape:export-xdpi="51.257355" inkscape:export-ydpi="51.257355">
+   <path id="path9" class="fil0" d="M40.02 31.81c0,4.51 -3.7,8.21 -8.21,8.21l-23.62 0c-4.51,0 -8.21,-3.7 -8.21,-8.21l0 -23.62c0,-4.51 3.7,-8.21 8.21,-8.21l23.62 0c4.51,0 8.21,3.7 8.21,8.21l0 23.62z" inkscape:connector-curvature="0"/>
+   <path id="path11" class="fil1" d="M18.22 13.35c0.75,1.01 1.21,2.26 1.26,3.6l0 0.23c0,1.31 -0.39,2.53 -1.06,3.55l-5.37 8.2 -0.15 0.22c-0.06,0.09 -0.16,0.14 -0.26,0.14 0,0 0,0 0,0l-4.38 0c-0.21,0 -0.33,-0.23 -0.22,-0.41l3.56 -5.44c-2.85,-0.65 -4.98,-3.21 -4.98,-6.26l0.01 -0.23c0.05,-1.34 0.51,-2.58 1.25,-3.59 1.17,-1.58 3.05,-2.61 5.17,-2.61 2.12,0 3.99,1.03 5.17,2.6l0 0zm-3.29 5.01l0.18 -0.27c0.19,-0.35 0.29,-0.74 0.29,-1.13 0,0 0,-0.01 0,-0.01 0,-1.3 -1.05,-2.35 -2.35,-2.35 -1.29,0 -2.35,1.05 -2.35,2.35 0,1.3 1.05,2.36 2.35,2.36 0.77,0 1.45,-0.38 1.88,-0.95zm17.16 -5.01c0.75,1.01 1.21,2.26 1.26,3.6l0 0.23c0,1.31 -0.39,2.53 -1.06,3.55l-5.37 8.2 -0.15 0.22c-0.06,0.09 -0.15,0.14 -0.26,0.14l-4.38 0c-0.21,0 -0.33,-0.23 -0.22,-0.41l3.56 -5.44c-2.85,-0.65 -4.98,-3.21 -4.98,-6.26l0.01 -0.23c0.05,-1.34 0.51,-2.58 1.25,-3.59 1.18,-1.58 3.05,-2.61 5.17,-2.61 2.12,0 4,1.03 5.17,2.6l0 0zm-3.29 5.01l0.18 -0.27c0.19,-0.35 0.3,-0.74 0.3,-1.13 0,0 0,-0.01 0,-0.01 -0.01,-1.3 -1.06,-2.35 -2.36,-2.35 -1.29,0 -2.35,1.05 -2.35,2.35 0,1.3 1.05,2.36 2.35,2.36 0.77,0 1.46,-0.38 1.88,-0.95z" inkscape:connector-curvature="0"/>
+  </g>
+ </g>
+</svg>
