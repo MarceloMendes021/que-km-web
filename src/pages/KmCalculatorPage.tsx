@@ -21,7 +21,7 @@ export function KmCalculatorPage() {
     <main className="min-h-dvh bg-(--background) py-4 text-(--text-primary)">
       <AppHeader />
 
-      <PageHeader title="Iniciar Jornada" subtitle="Registre o KM atual do odômetro" icon={<Calculator size={28} />} />
+      <PageHeader title="Calculadora" subtitle="Essa corrida vale a pena?" icon={<Calculator size={28} />} />
 
       <section className="mt-4 px-4 space-y-4">
         <div className="flex flex-col gap-4">
