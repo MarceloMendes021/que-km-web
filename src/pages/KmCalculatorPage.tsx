@@ -13,7 +13,7 @@ export function KmCalculatorPage() {
   const priceNumber = parseFloat(price);
   const distanceNumber = parseFloat(distance);
 
-  const isValidInput = !isNaN(priceNumber) && !isNaN(distanceNumber) && priceNumber > 0 && distanceNumber > 0;
+  const isValidInput = Number.isFinite(priceNumber) && Number.isFinite(distanceNumber) && priceNumber > 0 && distanceNumber > 0;
 
   const result: RideResult | null = isValidInput ? calculateRideValue(priceNumber, distanceNumber) : null;
 
