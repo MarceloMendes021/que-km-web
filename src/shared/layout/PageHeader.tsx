@@ -26,12 +26,12 @@ export function PageHeader({ title, subtitle, icon, showBackButton = true }: Pag
       )}
 
       <div className="flex items-start gap-3">
-        {icon && <div className="mt-2 bg-(--primary) text-primary-foreground p-1 rounded-sm">{icon}</div>}
+        {icon && <div className="mt-2 rounded-sm bg-(--primary) p-1 text-white">{icon}</div>}
 
         <div className="flex flex-col">
-          <h1 className="text-2xl font-semibold">{title}</h1>
+          <h1 className="text-2xl font-semibold text-(--text-primary)">{title}</h1>
 
-          {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+          {subtitle && <p className="text-sm text-(--text-secondary)">{subtitle}</p>}
         </div>
       </div>
     </header>
