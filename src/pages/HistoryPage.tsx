@@ -1,11 +1,18 @@
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, History } from "lucide-react";
 import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { PageHeader } from "@/shared/layout/PageHeader";
-import { History } from "lucide-react";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { historyMock, calculateWorkdayMetrics, type WorkdayHistory } from "@/features/history/mock/historyMock";
+
+const MONTHS = [
+  { label: "Março", value: "2026-03" },
+  { label: "Fevereiro", value: "2026-02" },
+  { label: "Janeiro", value: "2026-01" },
+  { label: "Dezembro", value: "2025-12" },
+];
 
 function formatDate(dateStr: string): string {
   const [yyyy, mm, dd] = dateStr.split("-");
@@ -60,6 +67,10 @@ function WorkdayItem({ workday }: { workday: WorkdayHistory }) {
 }
 
 export function HistoryPage() {
+  const [selectedMonth, setSelectedMonth] = useState(MONTHS[0].value);
+
+  const filteredHistory = historyMock.filter((w) => w.date.startsWith(selectedMonth));
+
   return (
     <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
@@ -67,15 +78,42 @@ export function HistoryPage() {
       <PageHeader title="Histórico" subtitle="Suas jornadas do mês" icon={<History size={28} />} />
 
       <section className="mt-4 px-4 space-y-4">
-        {historyMock.length > 0 ? (
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-medium text-(--text-secondary)">
+            {filteredHistory.length} jornada{filteredHistory.length !== 1 ? "s" : ""}
+          </h2>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-1 rounded-full border border-(--border) bg-(--surface) px-3 py-1.5 text-sm text-(--text-secondary)">
+                {MONTHS.find((m) => m.value === selectedMonth)?.label}
+                <ChevronDown size={14} />
+              </button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end" className="bg-(--surface) border-(--border)">
+              {MONTHS.map((month) => (
+                <DropdownMenuItem
+                  key={month.value}
+                  onClick={() => setSelectedMonth(month.value)}
+                  className={selectedMonth === month.value ? "text-(--primary)" : "text-(--text-secondary)"}
+                >
+                  {month.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {filteredHistory.length > 0 ? (
           <div className="rounded-(--radius-card) border border-(--border) bg-(--surface)">
-            {historyMock.map((workday) => (
+            {filteredHistory.map((workday) => (
               <WorkdayItem key={workday.id} workday={workday} />
             ))}
           </div>
         ) : (
           <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-10 flex flex-col items-center gap-2">
-            <p className="text-sm font-medium text-(--text-primary)">Nenhuma jornada este mês</p>
+            <p className="text-sm font-medium text-(--text-primary)">Nenhuma jornada em {MONTHS.find((m) => m.value === selectedMonth)?.label}</p>
             <p className="text-xs text-(--text-secondary)">Inicie uma jornada na tela inicial para começar</p>
           </div>
         )}
