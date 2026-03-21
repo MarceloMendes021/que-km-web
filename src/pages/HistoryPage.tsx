@@ -61,7 +61,7 @@ function WorkdayItem({ workday }: { workday: WorkdayHistory }) {
 
 export function HistoryPage() {
   return (
-    <main className="min-h-dvh bg-(--background) pt-24 pb-4 pb-28 text-(--text-primary)">
+    <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
 
       <PageHeader title="Histórico" subtitle="Suas jornadas do mês" icon={<History size={28} />} />
