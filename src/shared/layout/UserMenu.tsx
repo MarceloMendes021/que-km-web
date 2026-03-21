@@ -22,8 +22,7 @@ export function UserMenu() {
         </button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent side="top" align="end" sideOffset={-52} className="w-52 bg-(--background) border-(--border) rounded-md shadow-lg">
-        {/* Avatar + saudação */}
+      <DropdownMenuContent side="bottom" align="end" sideOffset={-40} alignOffset={0} className="w-52 bg-(--background) border-(--border) rounded-md shadow-lg">
         <div className="flex items-center gap-3 px-3 py-3">
           <Avatar className="h-10 w-10 border-2 border-(--primary)">
             <AvatarImage src="/avatar.png" />
@@ -34,7 +33,6 @@ export function UserMenu() {
 
         <DropdownMenuSeparator />
 
-        {/* Navegação principal */}
         <DropdownMenuItem asChild>
           <Link to="/profile" className="flex items-center gap-3 py-2">
             <User className="h-4 w-4" />
@@ -51,7 +49,6 @@ export function UserMenu() {
 
         <DropdownMenuSeparator />
 
-        {/* Suporte */}
         <DropdownMenuItem asChild>
           <Link to="/help" className="flex items-center gap-3 py-2">
             <HelpCircle className="h-4 w-4" />
@@ -66,7 +63,6 @@ export function UserMenu() {
 
         <DropdownMenuSeparator className="mt-2" />
 
-        {/* Sair — separado visualmente com espaço extra */}
         <DropdownMenuItem className="flex items-center gap-3 py-2 mt-1 text-(--danger)">
           <LogOut className="h-4 w-4" />
           Sair
