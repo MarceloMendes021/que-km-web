@@ -46,13 +46,21 @@ body {
   box-sizing: border-box;
   -webkit-user-select: none;
   user-select: none;
-  pointer-events: none;
 }
 
 input,
 textarea {
   -webkit-user-select: text;
   user-select: text;
+}
+
+svg {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.recharts-wrapper svg {
+  pointer-events: none;
 }
 
 button,
