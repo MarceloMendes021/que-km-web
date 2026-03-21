@@ -18,7 +18,7 @@ export function KmCalculatorPage() {
   const result: RideResult | null = isValidInput ? calculateRideValue(priceNumber, distanceNumber) : null;
 
   return (
-    <main className="min-h-dvh bg-(--background) pt-24 pb-4 text-(--text-primary)">
+    <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
 
       <PageHeader title="Calculadora" subtitle="Essa corrida vale a pena?" icon={<Calculator size={28} />} />
@@ -33,9 +33,7 @@ export function KmCalculatorPage() {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               onKeyDown={(e) => {
-                if (["e", "E", "+", "-"].includes(e.key)) {
-                  e.preventDefault();
-                }
+                if (["e", "E", "+", "-"].includes(e.key)) e.preventDefault();
               }}
               className="h-14 text-lg! rounded-md mt-2 border border-(--border) bg-(--surface) px-4"
             />
@@ -49,9 +47,7 @@ export function KmCalculatorPage() {
               value={distance}
               onChange={(e) => setDistance(e.target.value)}
               onKeyDown={(e) => {
-                if (["e", "E", "+", "-"].includes(e.key)) {
-                  e.preventDefault();
-                }
+                if (["e", "E", "+", "-"].includes(e.key)) e.preventDefault();
               }}
               className="h-14 text-lg! rounded-md mt-2 border border-(--border) bg-(--surface) px-4"
             />

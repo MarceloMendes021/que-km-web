@@ -25,7 +25,7 @@ export function WorkdayStartPage() {
   }
 
   return (
-    <main className="min-h-dvh bg-(--background) pt-24 pb-4 text-(--text-primary)">
+    <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
 
       <PageHeader title="Iniciar Jornada" subtitle="Registre o KM atual do odômetro" icon={<Car size={28} />} />
@@ -41,7 +41,7 @@ export function WorkdayStartPage() {
             <span className="text-lg">KM Inicial</span>
           </div>
 
-          <div className="mt-3 relative">
+          <div className="mt-3">
             <input
               id="odometer-input"
               type="number"
@@ -52,9 +52,7 @@ export function WorkdayStartPage() {
                 setError(null);
               }}
               onKeyDown={(e) => {
-                if (["e", "E", "+", "-", "."].includes(e.key)) {
-                  e.preventDefault();
-                }
+                if (["e", "E", "+", "-", "."].includes(e.key)) e.preventDefault();
               }}
               placeholder="0"
               className="w-full bg-transparent text-3xl! font-bold text-(--text-primary) outline-none placeholder:text-(--text-secondary)"

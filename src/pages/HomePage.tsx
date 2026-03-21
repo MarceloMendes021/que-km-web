@@ -6,14 +6,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { WorkdayActionButton } from "@/features/workday/components/WorkdayActionButton";
 
 export function HomePage() {
-  const month = new Date().toLocaleDateString("pt-BR", {
-    month: "long",
-  });
-
+  const month = new Date().toLocaleDateString("pt-BR", { month: "long" });
   const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
 
   return (
-    <main className="min-h-dvh bg-(--background) pt-24 pb-4 text-(--text-primary)">
+    <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
       <section className="mt-4 px-4 space-y-4">
         <MonthSummaryCard amount={1350} monthLabel="Janeiro" trend="positive" />
