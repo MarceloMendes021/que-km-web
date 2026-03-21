@@ -4,6 +4,7 @@ import { TrendingUp, TrendingDown, Minus, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
 import type { DayResult } from "@/features/workday/utils/validateWorkdayFinish";
+import { useEffect } from "react";
 
 function ResultCard({ label, value, highlight = false }: { label: string; value: string; highlight?: boolean }) {
   return (
@@ -18,6 +19,18 @@ export function WorkdayResultPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const result = location.state?.result as DayResult | undefined;
+
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+
+    function handlePopState() {
+      navigate("/", { replace: true });
+    }
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [navigate]);
 
   if (!result) {
     navigate("/");
