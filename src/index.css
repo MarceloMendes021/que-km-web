@@ -44,6 +44,15 @@ body {
 
 * {
   box-sizing: border-box;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 button,

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
 import { History, Target, TrendingUp, Zap, Award } from "lucide-react";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
 import { insightsMock } from "@/features/insights/mock/insightsMock";
@@ -64,15 +64,6 @@ export function InsightsPage() {
             <BarChart data={data.earningsByApp} margin={{ top: 16, right: 0, left: -20, bottom: 0 }}>
               <XAxis dataKey="app" tick={{ fill: "#9ba1a6", fontSize: 12 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: "#9ba1a6", fontSize: 11 }} axisLine={false} tickLine={false} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#121821",
-                  border: "1px solid #1f2933",
-                  borderRadius: 8,
-                  fontSize: 12,
-                }}
-                formatter={(value) => [formatCurrency(typeof value === "number" ? value : 0), "Faturamento"]}
-              />
               <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                 {data.earningsByApp.map((_, index) => (
                   <Cell key={index} fill={BAR_COLORS[index % BAR_COLORS.length]} />
@@ -82,7 +73,6 @@ export function InsightsPage() {
           </ResponsiveContainer>
         </div>
 
-        {/* Meta do mês */}
         <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-5">
           <div className="flex items-center gap-2 mb-3">
             <Target size={18} className="text-(--primary)" />
@@ -94,14 +84,12 @@ export function InsightsPage() {
             <span className="text-sm text-(--text-secondary)">de {formatCurrency(data.monthGoal)}</span>
           </div>
 
-          {/* Barra de progresso */}
           <div className="h-3 w-full rounded-full bg-(--border)">
             <div className="h-3 rounded-full bg-(--secondary) transition-all" style={{ width: `${goalProgress}%` }} />
           </div>
           <p className="mt-2 text-xs text-(--text-secondary)">{Math.round(goalProgress)}% da meta atingida</p>
         </div>
 
-        {/* Projeção do mês */}
         <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-5">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp size={18} className="text-(--primary)" />
@@ -121,7 +109,6 @@ export function InsightsPage() {
           )}
         </div>
 
-        {/* Taxa de aproveitamento */}
         <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-5">
           <div className="flex items-center gap-2 mb-2">
             <Zap size={18} className="text-(--primary)" />
@@ -134,7 +121,6 @@ export function InsightsPage() {
           </p>
         </div>
 
-        {/* Valor mínimo por km */}
         <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-5">
           <div className="flex items-center gap-2 mb-2">
             <Award size={18} className="text-(--primary)" />
@@ -158,7 +144,6 @@ export function InsightsPage() {
           </p>
         </div>
 
-        {/* Botão histórico */}
         <button onClick={() => navigate("/history")} className="w-full flex items-center justify-between rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-4">
           <div className="flex items-center gap-3">
             <History size={20} className="text-(--primary)" />
