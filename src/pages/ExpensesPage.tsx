@@ -5,6 +5,7 @@ import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
 import { expensesMock, CATEGORY_CONFIG, type Expense } from "@/features/expenses/mock/expensesMock";
+import { ExpenseSheet } from "@/features/expenses/components/ExpenseSheet";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 const MONTHS = [
@@ -29,6 +30,7 @@ function groupByCategory(expenses: Expense[]) {
 
 export function ExpensesPage() {
   const [selectedMonth, setSelectedMonth] = useState(MONTHS[0].value);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const filteredExpenses = expensesMock.filter((e) => e.date.startsWith(selectedMonth));
 
@@ -124,12 +126,11 @@ export function ExpensesPage() {
         )}
       </section>
 
-      <button
-        className="fixed bottom-24 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-(--primary) shadow-lg"
-        onClick={() => alert("Em breve: formulário de nova despesa")}
-      >
+      <button className="fixed bottom-24 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-(--primary) shadow-lg" onClick={() => setSheetOpen(true)}>
         <Plus size={24} className="text-white" />
       </button>
+
+      <ExpenseSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
 
       <BottomTabBar />
     </main>
