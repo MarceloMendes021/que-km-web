@@ -34,7 +34,6 @@ export function LoginPage() {
 
             <Button
               type="button"
-              variant="outline"
               onClick={handleLogin}
               className="flex h-14 w-full items-center justify-center gap-3 rounded-xl border border-(--border) bg-(--surface) text-sm font-medium text-(--text-primary) hover:bg-(--surface)/80"
             >
