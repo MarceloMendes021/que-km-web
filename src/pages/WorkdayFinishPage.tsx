@@ -6,6 +6,7 @@ import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { PageHeader } from "@/shared/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { WORKDAY_APPS } from "@/features/workday/config/apps";
+import { useCurrencyInput } from "@/shared/hooks/useCurrencyInput";
 import { validateWorkdayFinish, toCalculation, calculateDayResult, type WorkdayFinishData } from "@/features/workday/utils/validateWorkdayFinish";
 
 const INITIAL_ODOMETER = 44000;
@@ -13,27 +14,30 @@ const INITIAL_ODOMETER = 44000;
 export function WorkdayFinishPage() {
   const navigate = useNavigate();
 
-  const [data, setData] = useState<WorkdayFinishData>({
-    finalOdometer: "",
-    earnings: Object.fromEntries(WORKDAY_APPS.map((app) => [app.id, ""])),
-    fuel: "",
-    otherExpenses: "",
-  });
+  const fuelInput = useCurrencyInput();
+  const otherExpensesInput = useCurrencyInput();
+  const uberInput = useCurrencyInput();
+  const app99Input = useCurrencyInput();
 
+  const earningInputs: Record<string, ReturnType<typeof useCurrencyInput>> = {
+    uber: uberInput,
+    "99": app99Input,
+  };
+
+  const [finalOdometer, setFinalOdometer] = useState("");
   const [errors, setErrors] = useState<{
     finalOdometer?: string;
     earnings?: string;
   }>({});
 
-  function handleEarningChange(appId: string, value: string) {
-    setData((prev) => ({
-      ...prev,
-      earnings: { ...prev.earnings, [appId]: value },
-    }));
-    setErrors((prev) => ({ ...prev, earnings: undefined }));
-  }
-
   function handleFinish() {
+    const data: WorkdayFinishData = {
+      finalOdometer,
+      earnings: Object.fromEntries(WORKDAY_APPS.map((app) => [app.id, earningInputs[app.id].rawValue])),
+      fuel: fuelInput.rawValue,
+      otherExpenses: otherExpensesInput.rawValue,
+    };
+
     const validationErrors = validateWorkdayFinish(data);
 
     if (Object.keys(validationErrors).length > 0) {
@@ -69,9 +73,9 @@ export function WorkdayFinishPage() {
               type="number"
               inputMode="numeric"
               placeholder="0"
-              value={data.finalOdometer}
+              value={finalOdometer}
               onChange={(e) => {
-                setData((prev) => ({ ...prev, finalOdometer: e.target.value }));
+                setFinalOdometer(e.target.value);
                 setErrors((prev) => ({ ...prev, finalOdometer: undefined }));
               }}
               onKeyDown={(e) => {
@@ -105,10 +109,13 @@ export function WorkdayFinishPage() {
                 <input
                   id={`earning-${app.id}`}
                   type="text"
-                  inputMode="decimal"
-                  placeholder="0"
-                  value={data.earnings[app.id]}
-                  onChange={(e) => handleEarningChange(app.id, e.target.value)}
+                  inputMode="numeric"
+                  placeholder="R$ 0,00"
+                  value={earningInputs[app.id].displayValue}
+                  onChange={(e) => {
+                    earningInputs[app.id].handleChange(e.target.value);
+                    setErrors((prev) => ({ ...prev, earnings: undefined }));
+                  }}
                   className="mt-2 w-full bg-transparent text-xl! font-bold text-(--secondary) outline-none placeholder:text-(--text-secondary)"
                 />
               </div>
@@ -128,10 +135,10 @@ export function WorkdayFinishPage() {
               <input
                 id="fuel"
                 type="text"
-                inputMode="decimal"
+                inputMode="numeric"
                 placeholder="R$ 0,00"
-                value={data.fuel}
-                onChange={(e) => setData((prev) => ({ ...prev, fuel: e.target.value }))}
+                value={fuelInput.displayValue}
+                onChange={(e) => fuelInput.handleChange(e.target.value)}
                 className="w-32 bg-transparent text-right text-base font-semibold text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
@@ -141,10 +148,10 @@ export function WorkdayFinishPage() {
               <input
                 id="other-expenses"
                 type="text"
-                inputMode="decimal"
+                inputMode="numeric"
                 placeholder="R$ 0,00"
-                value={data.otherExpenses}
-                onChange={(e) => setData((prev) => ({ ...prev, otherExpenses: e.target.value }))}
+                value={otherExpensesInput.displayValue}
+                onChange={(e) => otherExpensesInput.handleChange(e.target.value)}
                 className="w-32 bg-transparent text-right text-base font-semibold text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
