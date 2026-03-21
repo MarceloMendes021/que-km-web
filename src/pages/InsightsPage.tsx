@@ -1,15 +1,12 @@
 import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
-import { PageHeader } from "@/shared/layout/PageHeader";
-import { History } from "lucide-react";
 
-export function HistoryPage() {
+export function InsightsPage() {
   return (
     <main className="min-h-dvh bg-(--background) py-4 text-(--text-primary)">
       <AppHeader />
-      <PageHeader title="Histórico" subtitle="Suas jornadas do mês" icon={<History size={28} />} />
       <section className="mt-4 px-4">
-        <p className="text-(--text-secondary)">Histórico em construção...</p>
+        <p className="text-(--text-secondary)">Insights em construção...</p>
       </section>
       <BottomTabBar />
     </main>

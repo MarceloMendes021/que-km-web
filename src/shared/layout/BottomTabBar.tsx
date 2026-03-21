@@ -1,4 +1,4 @@
-import { Calculator, History, House, Wallet } from "lucide-react";
+import { Calculator, House, Wallet, BarChart2 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const tabs = [
@@ -8,14 +8,14 @@ const tabs = [
     icon: House,
   },
   {
+    to: "/insights",
+    label: "Insights",
+    icon: BarChart2,
+  },
+  {
     to: "/km-calculator",
     label: "Calculadora",
     icon: Calculator,
-  },
-  {
-    to: "/history",
-    label: "Histórico",
-    icon: History,
   },
   {
     to: "/expenses",
@@ -36,7 +36,6 @@ export function BottomTabBar() {
               {({ isActive }) => (
                 <div className="flex flex-col items-center justify-center gap-1">
                   <Icon size={20} className={isActive ? "text-(--primary)" : "text-(--text-secondary)"} />
-
                   <span className={`text-xs ${isActive ? "text-(--primary)" : "text-(--text-secondary)"}`}>{tab.label}</span>
                 </div>
               )}

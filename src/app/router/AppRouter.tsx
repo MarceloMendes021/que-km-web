@@ -1,9 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-import { HistoryPage } from "@/pages/HistoryPage";
 import { HomePage } from "@/pages/HomePage";
-import { KmCalculatorPage } from "@/pages/KmCalculatorPage";
 import { LoginPage } from "@/pages/LoginPage";
+import { InsightsPage } from "@/pages/InsightsPage";
+import { HistoryPage } from "@/pages/HistoryPage";
+import { KmCalculatorPage } from "@/pages/KmCalculatorPage";
 import { WorkdayFinishPage } from "@/pages/WorkdayFinishPage";
 import { WorkdayStartPage } from "@/pages/WorkdayStartPage";
 import { WorkdayResultPage } from "@/pages/WorkdayResultPage";
@@ -19,6 +19,14 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
+    path: "/insights",
+    element: <InsightsPage />,
+  },
+  {
+    path: "/history",
+    element: <HistoryPage />,
+  },
+  {
     path: "/workday/start",
     element: <WorkdayStartPage />,
   },
@@ -29,10 +37,6 @@ const router = createBrowserRouter([
   {
     path: "/workday/result",
     element: <WorkdayResultPage />,
-  },
-  {
-    path: "/history",
-    element: <HistoryPage />,
   },
   {
     path: "/km-calculator",
