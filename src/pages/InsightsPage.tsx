@@ -23,7 +23,7 @@ export function InsightsPage() {
   const utilizationRate = Math.round((data.workedDays / data.plannedDays) * 100);
 
   return (
-    <main className="min-h-dvh bg-(--background) py-4 pb-28 text-(--text-primary)">
+    <main className="min-h-dvh bg-(--background) pt-24 pb-4 pb-28 text-(--text-primary)">
       <AppHeader />
 
       <section className="mt-4 px-4 space-y-6">

@@ -48,7 +48,7 @@ export function WorkdayFinishPage() {
   }
 
   return (
-    <main className="min-h-dvh bg-(--background) py-4 pb-28 text-(--text-primary)">
+    <main className="min-h-dvh bg-(--background) pt-24 pb-4 pb-28 text-(--text-primary)">
       <AppHeader />
 
       <PageHeader title="Encerrar Jornada" subtitle="Como foi o seu dia?" icon={<Car size={28} />} />

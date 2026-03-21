@@ -18,7 +18,7 @@ export function KmCalculatorPage() {
   const result: RideResult | null = isValidInput ? calculateRideValue(priceNumber, distanceNumber) : null;
 
   return (
-    <main className="min-h-dvh bg-(--background) py-4 text-(--text-primary)">
+    <main className="min-h-dvh bg-(--background) pt-24 pb-4 text-(--text-primary)">
       <AppHeader />
 
       <PageHeader title="Calculadora" subtitle="Essa corrida vale a pena?" icon={<Calculator size={28} />} />

@@ -38,7 +38,7 @@ export function ExpensesPage() {
   const totalExpenses = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
 
   return (
-    <main className="min-h-dvh bg-(--background) py-4 pb-36 text-(--text-primary)">
+    <main className="min-h-dvh bg-(--background) pt-24 pb-4 pb-36 text-(--text-primary)">
       <AppHeader />
 
       <section className="mt-4 px-4 space-y-6">
