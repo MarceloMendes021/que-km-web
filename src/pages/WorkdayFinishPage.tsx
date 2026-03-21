@@ -48,7 +48,7 @@ export function WorkdayFinishPage() {
   }
 
   return (
-    <main className="min-h-dvh bg-(--background) pt-24 pb-4 pb-28 text-(--text-primary)">
+    <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
 
       <PageHeader title="Encerrar Jornada" subtitle="Como foi o seu dia?" icon={<Car size={28} />} />
@@ -104,14 +104,11 @@ export function WorkdayFinishPage() {
                 </div>
                 <input
                   id={`earning-${app.id}`}
-                  type="number"
+                  type="text"
                   inputMode="decimal"
                   placeholder="0"
                   value={data.earnings[app.id]}
                   onChange={(e) => handleEarningChange(app.id, e.target.value)}
-                  onKeyDown={(e) => {
-                    if (["e", "E", "+", "-"].includes(e.key)) e.preventDefault();
-                  }}
                   className="mt-2 w-full bg-transparent text-xl! font-bold text-(--secondary) outline-none placeholder:text-(--text-secondary)"
                 />
               </div>
@@ -130,14 +127,11 @@ export function WorkdayFinishPage() {
               <span className="text-sm text-(--text-secondary)">Combustível</span>
               <input
                 id="fuel"
-                type="number"
+                type="text"
                 inputMode="decimal"
                 placeholder="R$ 0,00"
                 value={data.fuel}
                 onChange={(e) => setData((prev) => ({ ...prev, fuel: e.target.value }))}
-                onKeyDown={(e) => {
-                  if (["e", "E", "+", "-"].includes(e.key)) e.preventDefault();
-                }}
                 className="w-32 bg-transparent text-right text-base font-semibold text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
@@ -146,14 +140,11 @@ export function WorkdayFinishPage() {
               <span className="text-sm text-(--text-secondary)">Outras despesas</span>
               <input
                 id="other-expenses"
-                type="number"
+                type="text"
                 inputMode="decimal"
                 placeholder="R$ 0,00"
                 value={data.otherExpenses}
                 onChange={(e) => setData((prev) => ({ ...prev, otherExpenses: e.target.value }))}
-                onKeyDown={(e) => {
-                  if (["e", "E", "+", "-"].includes(e.key)) e.preventDefault();
-                }}
                 className="w-32 bg-transparent text-right text-base font-semibold text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
