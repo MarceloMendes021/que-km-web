@@ -18,9 +18,9 @@ export function HomePage() {
   const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
 
   return (
-    <main className="h-dvh overflow-hidden bg-(--background) pt-24 pb-28 text-(--text-primary)">
+    <main className="h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
-      <section className="mt-4 px-4 space-y-4">
+      <section className="h-full overflow-hidden mt-4 px-4 space-y-4">
         <p className="text-lg font-semibold text-(--text-primary)">{getGreeting("Marcelo")}</p>
 
         <MonthSummaryCard amount={1350} monthLabel="Janeiro" trend="positive" />
@@ -33,14 +33,14 @@ export function HomePage() {
         <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-4 py-3 flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Briefcase size={16} className="text-(--text-secondary)" />
+              <Briefcase size={18} className="text-(--text-secondary)" />
               <span className="text-sm text-(--text-secondary)">Dias trabalhados em {capitalizedMonth}</span>
             </div>
             <span className="text-lg font-semibold text-(--text-primary)">5</span>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Car size={16} className="text-(--text-secondary)" />
+              <Car size={20} className="text-(--text-secondary)" />
               <span className="text-sm text-(--text-secondary)">KM rodados em {capitalizedMonth}</span>
             </div>
             <span className="text-lg font-semibold text-(--text-primary)">412 km</span>
