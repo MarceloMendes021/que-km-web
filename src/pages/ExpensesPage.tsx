@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Plus, ChevronDown } from "lucide-react";
+import { Plus, ChevronDown, Wallet } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
+import { PageHeader } from "@/shared/layout/PageHeader";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
 import { expensesMock, CATEGORY_CONFIG, type Expense } from "@/features/expenses/mock/expensesMock";
 import { ExpenseSheet } from "@/features/expenses/components/ExpenseSheet";
@@ -33,7 +34,6 @@ export function ExpensesPage() {
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const filteredExpenses = expensesMock.filter((e) => e.date.startsWith(selectedMonth));
-
   const chartData = groupByCategory(filteredExpenses);
   const totalExpenses = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
 
@@ -41,10 +41,10 @@ export function ExpensesPage() {
     <main className="min-h-dvh bg-(--background) pt-24 pb-36 text-(--text-primary)">
       <AppHeader />
 
-      <section className="mt-4 px-4 space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-(--text-primary)">Despesas</h1>
+      <PageHeader title="Despesas" subtitle="Mantenha seus gastos sob controle" icon={<Wallet size={28} />} showBackButton={false} />
 
+      <section className="mt-2 px-4 space-y-6">
+        <div className="flex items-center justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1 rounded-full border border-(--border) bg-(--surface) px-3 py-1.5 text-sm text-(--text-secondary)">

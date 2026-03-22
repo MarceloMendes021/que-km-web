@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
+import { PageHeader } from "@/shared/layout/PageHeader";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
-import { History, Target, TrendingUp, Zap, Award } from "lucide-react";
+import { History, Target, TrendingUp, Zap, Award, BarChart2 } from "lucide-react";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
 import { insightsMock } from "@/features/insights/mock/insightsMock";
 
@@ -26,9 +27,9 @@ export function InsightsPage() {
     <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
 
-      <section className="mt-4 px-4 space-y-6">
-        <h1 className="text-xl font-semibold text-(--text-primary)">Insights do mês</h1>
+      <PageHeader title="Insights" subtitle="Veja como seu mês está evoluindo" icon={<BarChart2 size={28} />} showBackButton={false} />
 
+      <section className="mt-4 px-4 space-y-6">
         <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-5">
           <p className="text-sm font-medium text-(--text-primary)">Lucro vs Despesas</p>
           <p className="text-xs text-(--text-secondary) mt-1">
