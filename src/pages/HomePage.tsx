@@ -18,7 +18,7 @@ export function HomePage() {
   const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
 
   return (
-    <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
+    <main className="h-dvh overflow-hidden bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
       <section className="mt-4 px-4 space-y-4">
         <p className="text-lg font-semibold text-(--text-primary)">{getGreeting("Marcelo")}</p>
