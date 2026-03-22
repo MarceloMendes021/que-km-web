@@ -21,9 +21,9 @@ export function KmCalculatorPage() {
     <main className="fixed inset-0 bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
 
-      <PageHeader title="Calculadora" subtitle="Essa corrida vale a pena?" icon={<Calculator size={28} />} />
+      <PageHeader title="Calculadora" subtitle="Essa corrida vale a pena?" icon={<Calculator size={28} />} showBackButton={false} />
 
-      <section className="mt-4 px-4 space-y-4">
+      <section className="h-full overflow-hidden mt-4 px-4 space-y-4">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <label className="text-sm text-(--text-primary)">Valor da corrida (R$)</label>
