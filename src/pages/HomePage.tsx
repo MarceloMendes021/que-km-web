@@ -4,6 +4,7 @@ import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { WorkdayActionButton } from "@/features/workday/components/WorkdayActionButton";
 import { Briefcase, Car } from "lucide-react";
+import { getCurrentMonth } from "@/shared/utils/getCurrentMonth";
 
 function getGreeting(name: string): string {
   const hour = new Date().getHours();
@@ -13,17 +14,16 @@ function getGreeting(name: string): string {
   return `Olá, ${name}! Boa noite.`;
 }
 
-export function HomePage() {
-  const month = new Date().toLocaleDateString("pt-BR", { month: "long" });
-  const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
+const capitalizedMonth = getCurrentMonth();
 
+export function HomePage() {
   return (
     <main className="fixed inset-0 bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
       <section className="h-full overflow-hidden mt-4 px-4 space-y-4">
         <p className="text-lg font-semibold text-(--text-primary)">{getGreeting("Marcelo")}</p>
 
-        <MonthSummaryCard amount={1350} monthLabel="Janeiro" trend="positive" />
+        <MonthSummaryCard amount={1350} trend="positive" />
 
         <div className="grid grid-cols-2 gap-4">
           <HomeStatCard icon={<img src="/icons/dollar-icon.svg" alt="Ícone de dólar" />} title="Faturamento" value={1234} variant="positive" />

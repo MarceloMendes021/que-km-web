@@ -1,15 +1,17 @@
 import { TrendingDown, MoveRight, TrendingUp } from "lucide-react";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
+import { getCurrentMonth } from "@/shared/utils/getCurrentMonth";
 
 type MonthSummaryTrend = "positive" | "negative" | "neutral";
 
 type MonthSummaryCardProps = {
   amount: number;
-  monthLabel: string;
   trend: MonthSummaryTrend;
 };
 
-export function MonthSummaryCard({ amount, monthLabel, trend }: MonthSummaryCardProps) {
+export function MonthSummaryCard({ amount, trend }: MonthSummaryCardProps) {
+  const month = getCurrentMonth();
+
   const trendConfig = {
     positive: {
       valueColor: "text-(--secondary)",
@@ -36,9 +38,8 @@ export function MonthSummaryCard({ amount, monthLabel, trend }: MonthSummaryCard
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-base font-medium text-(--text-primary)">Lucro do mês</p>
-          <p className="mt-1 text-sm text-(--text-secondary)">{monthLabel}</p>
+          <p className="mt-1 text-sm text-(--text-secondary)">{month}</p>
         </div>
-
         <div>{trendConfig.icon}</div>
       </div>
 
