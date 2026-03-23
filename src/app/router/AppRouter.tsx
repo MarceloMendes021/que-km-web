@@ -8,6 +8,7 @@ import { WorkdayFinishPage } from "@/pages/WorkdayFinishPage";
 import { WorkdayStartPage } from "@/pages/WorkdayStartPage";
 import { WorkdayResultPage } from "@/pages/WorkdayResultPage";
 import { ExpensesPage } from "@/pages/ExpensesPage";
+import { RegisterPage } from "@/pages/RegisterPage";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,11 @@ const router = createBrowserRouter([
   {
     path: "/expenses",
     element: <ExpensesPage />,
+  },
+
+  {
+    path: "/register",
+    element: <RegisterPage />,
   },
 ]);
 
