@@ -17,7 +17,6 @@ export function WorkdayFinishPage() {
   const fuelInput = useCurrencyInput();
   const foodInput = useCurrencyInput();
   const otherExpensesInput = useCurrencyInput();
-
   const uberInput = useCurrencyInput();
   const app99Input = useCurrencyInput();
   const particularInput = useCurrencyInput();
@@ -42,7 +41,7 @@ export function WorkdayFinishPage() {
       finalOdometer,
       earnings: Object.fromEntries(WORKDAY_APPS.map((app) => [app.id, earningInputs[app.id].rawValue])),
       fuel: fuelInput.rawValue,
-      otherExpenses: foodInput.rawValue + otherExpensesInput.rawValue,
+      otherExpenses: String(parseFloat(foodInput.rawValue || "0") + parseFloat(otherExpensesInput.rawValue || "0")),
     };
 
     const validationErrors = validateWorkdayFinish(data);
@@ -65,56 +64,50 @@ export function WorkdayFinishPage() {
       <PageHeader title="Encerrar Jornada" subtitle="Como foi o seu dia?" icon={<Car size={28} />} />
 
       <section className="mt-4 px-4 space-y-6">
-        <div className="flex flex-col gap-1">
-          <div
-            className={`rounded-(--radius-card) border bg-(--surface) px-10 py-5 transition-colors cursor-text
-              ${errors.finalOdometer ? "border-(--danger)" : "border-(--border)"}`}
-            onClick={() => document.getElementById("final-odometer")?.focus()}
-          >
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-9 items-center justify-center rounded-lg bg-(--primary)/10">
-                <Gauge size={28} className="text-(--primary)" />
-              </div>
-              <span className="text-lg font-medium text-(--text-secondary)">KM Final</span>
+        <div
+          className={`rounded-(--radius-card) border bg-(--surface) px-6 py-6 transition-colors cursor-text ${errors.finalOdometer ? "border-(--danger)" : "border-(--border)"}`}
+          onClick={() => document.getElementById("final-odometer")?.focus()}
+        >
+          <div className="flex items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-(--primary)/10">
+              <Gauge size={18} className="text-(--primary)" />
             </div>
-
-            <input
-              id="final-odometer"
-              type="number"
-              inputMode="numeric"
-              placeholder="0"
-              value={finalOdometer}
-              onChange={(e) => {
-                setFinalOdometer(e.target.value);
-                setErrors((prev) => ({
-                  ...prev,
-                  finalOdometer: undefined,
-                }));
-              }}
-              onKeyDown={(e) => {
-                if (["e", "E", "+", "-", "."].includes(e.key)) e.preventDefault();
-              }}
-              className="mt-3 w-full bg-transparent text-3xl! font-bold text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
-            />
+            <span className="text-sm font-medium text-(--text-secondary)">KM Final</span>
           </div>
-          {errors.finalOdometer && <p className="text-sm text-(--danger)">{errors.finalOdometer}</p>}
+
+          <input
+            id="final-odometer"
+            type="number"
+            inputMode="numeric"
+            placeholder="0"
+            value={finalOdometer}
+            onChange={(e) => {
+              setFinalOdometer(e.target.value);
+              setErrors((prev) => ({ ...prev, finalOdometer: undefined }));
+            }}
+            onKeyDown={(e) => {
+              if (["e", "E", "+", "-", "."].includes(e.key)) e.preventDefault();
+              if (e.key === "Enter") handleFinish();
+            }}
+            className="mt-4 w-full bg-transparent text-5xl! font-bold text-(--text-primary) outline-none placeholder:text-(--text-secondary)/40"
+          />
+
+          {errors.finalOdometer && <p className="mt-3 text-sm text-(--danger)">{errors.finalOdometer}</p>}
         </div>
 
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--secondary)/10">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-(--secondary)/10">
               <DollarSign size={18} className="text-(--secondary)" />
             </div>
             <span className="text-base font-medium text-(--text-primary)">Ganhos do dia</span>
           </div>
 
-          {errors.earnings && <p className="text-sm text-(--danger)">{errors.earnings}</p>}
-
           <div className="grid grid-cols-2 gap-3">
             {mainApps.map((app) => (
               <div
                 key={app.id}
-                className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-4 py-4 cursor-text"
+                className={`rounded-(--radius-card) border bg-(--surface) px-4 py-4 cursor-text transition-colors ${errors.earnings ? "border-(--danger)" : "border-(--border)"}`}
                 onClick={() => document.getElementById(`earning-${app.id}`)?.focus()}
               >
                 <div className="flex items-center gap-2 mb-2">
@@ -127,7 +120,10 @@ export function WorkdayFinishPage() {
                   inputMode="numeric"
                   placeholder="R$ 0,00"
                   value={earningInputs[app.id]?.displayValue ?? ""}
-                  onChange={(e) => earningInputs[app.id]?.handleChange(e.target.value)}
+                  onChange={(e) => {
+                    earningInputs[app.id]?.handleChange(e.target.value);
+                    setErrors((prev) => ({ ...prev, earnings: undefined }));
+                  }}
                   className="w-full bg-transparent text-2xl! font-bold text-(--secondary) outline-none placeholder:text-(--text-secondary)"
                 />
               </div>
@@ -136,7 +132,9 @@ export function WorkdayFinishPage() {
 
           {particularApp && (
             <div
-              className="rounded-(--radius-card) border border-(--border) bg-(--surface)/60 px-4 py-3 cursor-text flex items-center justify-between"
+              className={`rounded-(--radius-card) border bg-(--surface)/60 px-4 py-3 cursor-text flex items-center justify-between transition-colors ${
+                errors.earnings ? "border-(--danger)" : "border-(--border)"
+              }`}
               onClick={() => document.getElementById(`earning-${particularApp.id}`)?.focus()}
             >
               <div className="flex items-center gap-3">
@@ -152,16 +150,21 @@ export function WorkdayFinishPage() {
                 inputMode="numeric"
                 placeholder="R$ 0,00"
                 value={earningInputs[particularApp.id]?.displayValue ?? ""}
-                onChange={(e) => earningInputs[particularApp.id]?.handleChange(e.target.value)}
+                onChange={(e) => {
+                  earningInputs[particularApp.id]?.handleChange(e.target.value);
+                  setErrors((prev) => ({ ...prev, earnings: undefined }));
+                }}
                 className="w-36 bg-transparent text-right text-xl! font-bold text-(--secondary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
           )}
+
+          {errors.earnings && <p className="text-sm text-(--danger)">{errors.earnings}</p>}
         </div>
 
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--danger)/10">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-(--danger)/10">
               <Fuel size={18} className="text-(--danger)" />
             </div>
             <span className="text-base font-medium text-(--text-primary)">Despesas</span>
@@ -172,19 +175,25 @@ export function WorkdayFinishPage() {
               <span className="text-sm text-(--text-secondary)">Combustível</span>
               <input
                 id="fuel"
+                type="text"
+                inputMode="numeric"
+                placeholder="R$ 0,00"
                 value={fuelInput.displayValue}
                 onChange={(e) => fuelInput.handleChange(e.target.value)}
-                className="w-32 bg-transparent text-right text-base font-semibold text-(--text-primary) outline-none"
+                className="w-32 bg-transparent text-right text-base font-semibold text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
 
-            <div className="flex items-center justify-between px-4 py-4 cursor-text" onClick={() => document.getElementById("food-expenses")?.focus()}>
+            <div className="flex items-center justify-between px-4 py-4 cursor-text" onClick={() => document.getElementById("food")?.focus()}>
               <span className="text-sm text-(--text-secondary)">Alimentação</span>
               <input
-                id="food-expenses"
+                id="food"
+                type="text"
+                inputMode="numeric"
+                placeholder="R$ 0,00"
                 value={foodInput.displayValue}
                 onChange={(e) => foodInput.handleChange(e.target.value)}
-                className="w-32 bg-transparent text-right text-base font-semibold text-(--text-primary) outline-none"
+                className="w-32 bg-transparent text-right text-base font-semibold text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
 
@@ -192,9 +201,12 @@ export function WorkdayFinishPage() {
               <span className="text-sm text-(--text-secondary)">Outras despesas</span>
               <input
                 id="other-expenses"
+                type="text"
+                inputMode="numeric"
+                placeholder="R$ 0,00"
                 value={otherExpensesInput.displayValue}
                 onChange={(e) => otherExpensesInput.handleChange(e.target.value)}
-                className="w-32 bg-transparent text-right text-base font-semibold text-(--text-primary) outline-none"
+                className="w-32 bg-transparent text-right text-base font-semibold text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
           </div>
