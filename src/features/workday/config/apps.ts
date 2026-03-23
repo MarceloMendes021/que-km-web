@@ -15,4 +15,9 @@ export const WORKDAY_APPS: WorkdayApp[] = [
     name: "99",
     logo: "/icons/99-logo.svg",
   },
+  {
+    id: "particular",
+    name: "Particular",
+    logo: "/icons/corrida-particular.svg",
+  },
 ];
