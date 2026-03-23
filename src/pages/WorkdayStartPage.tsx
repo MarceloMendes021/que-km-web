@@ -25,7 +25,7 @@ export function WorkdayStartPage() {
   }
 
   return (
-    <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
+    <main className="fixed inset-0 bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
 
       <PageHeader title="Iniciar Jornada" subtitle="Registre o KM atual do odômetro" icon={<Car size={28} />} />
