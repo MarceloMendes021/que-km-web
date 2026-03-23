@@ -36,9 +36,11 @@ export function WorkdayStartPage() {
             ${error ? "border-(--danger)" : "border-(--border)"}`}
           onClick={() => document.getElementById("odometer-input")?.focus()}
         >
-          <div className="flex items-center gap-2 text-(--text-secondary)">
-            <Gauge size={28} />
-            <span className="text-lg">KM Inicial</span>
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--primary)/10">
+              <Gauge size={28} className="text-(--primary)" />
+            </div>
+            <span className="text-lg font-medium text-(--text-secondary)">KM Inicial</span>
           </div>
 
           <div className="mt-3">
@@ -53,6 +55,7 @@ export function WorkdayStartPage() {
               }}
               onKeyDown={(e) => {
                 if (["e", "E", "+", "-", "."].includes(e.key)) e.preventDefault();
+                if (e.key === "Enter") handleStart();
               }}
               placeholder="0"
               className="w-full bg-transparent text-3xl! font-bold text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
