@@ -72,52 +72,56 @@ export function HistoryPage() {
   const filteredHistory = historyMock.filter((w) => w.date.startsWith(selectedMonth));
 
   return (
-    <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
+    <main className="fixed inset-0 flex flex-col bg-(--background) text-(--text-primary)">
       <AppHeader />
 
-      <PageHeader title="Histórico" subtitle="Suas jornadas do mês" icon={<History size={28} />} />
+      {/* Container de scroll controlado */}
+      <div className="flex-1 overflow-y-auto pt-24 pb-28">
+        <PageHeader title="Histórico" subtitle="Suas jornadas do mês" icon={<History size={28} />} />
 
-      <section className="mt-4 px-4 space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium text-(--text-secondary)">
-            {filteredHistory.length} jornada{filteredHistory.length !== 1 ? "s" : ""}
-          </h2>
+        <section className="mt-4 px-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-medium text-(--text-secondary)">
+              {filteredHistory.length} jornada
+              {filteredHistory.length !== 1 ? "s" : ""}
+            </h2>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-1 rounded-full border border-(--border) bg-(--surface) px-3 py-1.5 text-sm text-(--text-secondary)">
-                {MONTHS.find((m) => m.value === selectedMonth)?.label}
-                <ChevronDown size={14} />
-              </button>
-            </DropdownMenuTrigger>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-1 rounded-full border border-(--border) bg-(--surface) px-3 py-1.5 text-sm text-(--text-secondary)">
+                  {MONTHS.find((m) => m.value === selectedMonth)?.label}
+                  <ChevronDown size={14} />
+                </button>
+              </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="bg-(--surface) border-(--border)">
-              {MONTHS.map((month) => (
-                <DropdownMenuItem
-                  key={month.value}
-                  onClick={() => setSelectedMonth(month.value)}
-                  className={selectedMonth === month.value ? "text-(--primary)" : "text-(--text-secondary)"}
-                >
-                  {month.label}
-                </DropdownMenuItem>
+              <DropdownMenuContent align="end" className="bg-(--surface) border-(--border)">
+                {MONTHS.map((month) => (
+                  <DropdownMenuItem
+                    key={month.value}
+                    onClick={() => setSelectedMonth(month.value)}
+                    className={selectedMonth === month.value ? "text-(--primary)" : "text-(--text-secondary)"}
+                  >
+                    {month.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          {filteredHistory.length > 0 ? (
+            <div className="rounded-(--radius-card) border border-(--border) bg-(--surface)">
+              {filteredHistory.map((workday) => (
+                <WorkdayItem key={workday.id} workday={workday} />
               ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-
-        {filteredHistory.length > 0 ? (
-          <div className="rounded-(--radius-card) border border-(--border) bg-(--surface)">
-            {filteredHistory.map((workday) => (
-              <WorkdayItem key={workday.id} workday={workday} />
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-10 flex flex-col items-center gap-2">
-            <p className="text-sm font-medium text-(--text-primary)">Nenhuma jornada em {MONTHS.find((m) => m.value === selectedMonth)?.label}</p>
-            <p className="text-xs text-(--text-secondary)">Inicie uma jornada na tela inicial para começar</p>
-          </div>
-        )}
-      </section>
+            </div>
+          ) : (
+            <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-10 flex flex-col items-center gap-2">
+              <p className="text-sm font-medium text-(--text-primary)">Nenhuma jornada em {MONTHS.find((m) => m.value === selectedMonth)?.label}</p>
+              <p className="text-xs text-(--text-secondary)">Inicie uma jornada na tela inicial para começar</p>
+            </div>
+          )}
+        </section>
+      </div>
 
       <BottomTabBar />
     </main>
