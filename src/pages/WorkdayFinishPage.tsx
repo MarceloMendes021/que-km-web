@@ -64,40 +64,42 @@ export function WorkdayFinishPage() {
       <PageHeader title="Encerrar Jornada" subtitle="Como foi o seu dia?" icon={<Car size={28} />} />
 
       <section className="mt-4 px-4 space-y-6">
-        <div
-          className={`rounded-(--radius-card) border bg-(--surface) px-6 py-6 transition-colors cursor-text ${errors.finalOdometer ? "border-(--danger)" : "border-(--border)"}`}
-          onClick={() => document.getElementById("final-odometer")?.focus()}
-        >
-          <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-(--primary)/10">
-              <Gauge size={18} className="text-(--primary)" />
+        <div className="flex flex-col gap-1">
+          <div
+            className={`rounded-(--radius-card) border bg-(--surface) px-6 py-5 transition-colors cursor-text ${errors.finalOdometer ? "border-(--danger)" : "border-(--border)"}`}
+            onClick={() => document.getElementById("final-odometer")?.focus()}
+          >
+            <div className="flex items-center gap-2">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-(--primary)/10">
+                <Gauge size={26} className="text-(--primary)" />
+              </div>
+              <span className="text-lg font-medium text-(--text-secondary)">KM Final</span>
             </div>
-            <span className="text-sm font-medium text-(--text-secondary)">KM Final</span>
+
+            <input
+              id="final-odometer"
+              type="number"
+              inputMode="numeric"
+              placeholder="0"
+              value={finalOdometer}
+              onChange={(e) => {
+                setFinalOdometer(e.target.value);
+                setErrors((prev) => ({ ...prev, finalOdometer: undefined }));
+              }}
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-", "."].includes(e.key)) e.preventDefault();
+                if (e.key === "Enter") handleFinish();
+              }}
+              className="mt-4 w-full bg-transparent text-3xl! font-bold text-(--text-primary) outline-none placeholder:text-(--text-secondary)/40"
+            />
           </div>
 
-          <input
-            id="final-odometer"
-            type="number"
-            inputMode="numeric"
-            placeholder="0"
-            value={finalOdometer}
-            onChange={(e) => {
-              setFinalOdometer(e.target.value);
-              setErrors((prev) => ({ ...prev, finalOdometer: undefined }));
-            }}
-            onKeyDown={(e) => {
-              if (["e", "E", "+", "-", "."].includes(e.key)) e.preventDefault();
-              if (e.key === "Enter") handleFinish();
-            }}
-            className="mt-4 w-full bg-transparent text-5xl! font-bold text-(--text-primary) outline-none placeholder:text-(--text-secondary)/40"
-          />
-
-          {errors.finalOdometer && <p className="mt-3 text-sm text-(--danger)">{errors.finalOdometer}</p>}
+          {errors.finalOdometer && <p className="text-sm text-(--danger)">{errors.finalOdometer}</p>}
         </div>
 
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-(--secondary)/10">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--secondary)/10">
               <DollarSign size={18} className="text-(--secondary)" />
             </div>
             <span className="text-base font-medium text-(--text-primary)">Ganhos do dia</span>
@@ -164,7 +166,7 @@ export function WorkdayFinishPage() {
 
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-(--danger)/10">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--danger)/10">
               <Fuel size={18} className="text-(--danger)" />
             </div>
             <span className="text-base font-medium text-(--text-primary)">Despesas</span>
