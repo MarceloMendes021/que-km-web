@@ -30,20 +30,25 @@ export function HomePage() {
           <HomeStatCard icon={<img src="/icons/wallet-out-icon.svg" alt="Ícone de despesas" />} title="Despesas" value={600} variant="danger" />
         </div>
 
-        <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-4 py-3 flex flex-col gap-3">
-          <div className="flex items-center justify-between">
+        <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) divide-y divide-(--border)">
+          <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center gap-2">
-              <Briefcase size={18} className="text-(--text-secondary)" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--primary)/10">
+                <Briefcase size={16} className="text-(--primary)" />
+              </div>
               <span className="text-sm text-(--text-secondary)">Dias trabalhados em {capitalizedMonth}</span>
             </div>
-            <span className="text-lg font-semibold text-(--text-primary)">5</span>
+            <span className="text-lg font-bold text-(--text-primary)">5</span>
           </div>
-          <div className="flex items-center justify-between">
+
+          <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center gap-2">
-              <Car size={20} className="text-(--text-secondary)" />
-              <span className="text-sm text-(--text-secondary)">KM rodados em {capitalizedMonth}</span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--primary)/10">
+                <Car size={18} className="text-(--primary)" />
+              </div>
+              <span className="text-sm text-(--text-secondary)">KM rodado em {capitalizedMonth}</span>
             </div>
-            <span className="text-lg font-semibold text-(--text-primary)">412 km</span>
+            <span className="text-lg font-bold text-(--text-primary)">412 km</span>
           </div>
         </div>
 
