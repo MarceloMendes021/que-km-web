@@ -37,7 +37,7 @@ export function WorkdayStartPage() {
           onClick={() => document.getElementById("odometer-input")?.focus()}
         >
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--primary)/10">
+            <div className="flex h-8 w-9 items-center justify-center rounded-lg bg-(--primary)/10">
               <Gauge size={28} className="text-(--primary)" />
             </div>
             <span className="text-lg font-medium text-(--text-secondary)">KM Inicial</span>
