@@ -9,6 +9,8 @@ import { WorkdayStartPage } from "@/pages/WorkdayStartPage";
 import { WorkdayResultPage } from "@/pages/WorkdayResultPage";
 import { ExpensesPage } from "@/pages/ExpensesPage";
 import { RegisterPage } from "@/pages/RegisterPage";
+import { ProfilePage } from "@/pages/ProfilePage";
+import { MyJourneyPage } from "@/pages/MyJourneyPage";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
   },
   {
     path: "/insights",
@@ -47,10 +53,13 @@ const router = createBrowserRouter([
     path: "/expenses",
     element: <ExpensesPage />,
   },
-
   {
-    path: "/register",
-    element: <RegisterPage />,
+    path: "/profile",
+    element: <ProfilePage />,
+  },
+  {
+    path: "/my-journey",
+    element: <MyJourneyPage />,
   },
 ]);
 
