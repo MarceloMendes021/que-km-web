@@ -41,7 +41,7 @@ export function UserMenu() {
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link to="/workday-settings" className="flex items-center gap-3 py-2">
+          <Link to="/my-journey" className="flex items-center gap-3 py-2">
             <Briefcase className="h-4 w-4" />
             Minha jornada
           </Link>
