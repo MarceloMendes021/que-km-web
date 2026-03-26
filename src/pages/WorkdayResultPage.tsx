@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
 import type { DayResult } from "@/features/workday/utils/validateWorkdayFinish";
 import { useEffect } from "react";
+import { useWorkdayStore } from "@/features/workday/stores/useWorkdayStore";
 
 type ResultCardProps = {
   label: string;
@@ -35,6 +36,7 @@ function ResultCard({ label, value, variant = "default" }: ResultCardProps) {
 export function WorkdayResultPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const finishWorkday = useWorkdayStore((s) => s.finishWorkday);
   const result = location.state?.result as DayResult | undefined;
 
   useEffect(() => {
@@ -98,7 +100,13 @@ export function WorkdayResultPage() {
       </motion.div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.5 }} className="mt-8">
-        <Button onClick={() => navigate("/")} className="w-full h-14 rounded-xl bg-(--primary) text-lg! font-semibold text-white hover:bg-(--primary)/90">
+        <Button
+          onClick={() => {
+            finishWorkday();
+            navigate("/");
+          }}
+          className="w-full h-14 rounded-xl bg-(--primary) text-lg! font-semibold text-white hover:bg-(--primary)/90"
+        >
           <Home size={20} />
           Voltar para o início
         </Button>

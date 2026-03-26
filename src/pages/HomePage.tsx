@@ -5,6 +5,7 @@ import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { WorkdayActionButton } from "@/features/workday/components/WorkdayActionButton";
 import { Briefcase, Car } from "lucide-react";
 import { getCurrentMonth } from "@/shared/utils/getCurrentMonth";
+import { useWorkdayStore } from "@/features/workday/stores/useWorkdayStore";
 
 function getGreeting(name: string): string {
   const hour = new Date().getHours();
@@ -17,6 +18,7 @@ function getGreeting(name: string): string {
 const capitalizedMonth = getCurrentMonth();
 
 export function HomePage() {
+  const isActive = useWorkdayStore((s) => s.isActive);
   return (
     <main className="fixed inset-0 bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
@@ -52,7 +54,7 @@ export function HomePage() {
           </div>
         </div>
 
-        <WorkdayActionButton workdayStarted={false} />
+        <WorkdayActionButton workdayStarted={isActive} />
       </section>
       <BottomTabBar />
     </main>

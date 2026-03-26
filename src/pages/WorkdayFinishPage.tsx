@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button";
 import { WORKDAY_APPS } from "@/features/workday/config/apps";
 import { useCurrencyInput } from "@/shared/hooks/useCurrencyInput";
 import { validateWorkdayFinish, toCalculation, calculateDayResult, type WorkdayFinishData } from "@/features/workday/utils/validateWorkdayFinish";
-
-const INITIAL_ODOMETER = 44000;
+import { useWorkdayStore } from "@/features/workday/stores/useWorkdayStore";
 
 export function WorkdayFinishPage() {
   const navigate = useNavigate();
@@ -52,10 +51,12 @@ export function WorkdayFinishPage() {
     }
 
     const calculation = toCalculation(data);
-    const result = calculateDayResult(calculation, INITIAL_ODOMETER);
+    const result = calculateDayResult(calculation, startOdometer ?? 0);
 
     navigate("/workday/result", { state: { result } });
   }
+
+  const startOdometer = useWorkdayStore((s) => s.startOdometer);
 
   return (
     <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
