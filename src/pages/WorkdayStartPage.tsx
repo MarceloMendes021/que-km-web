@@ -6,11 +6,13 @@ import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { PageHeader } from "@/shared/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { validateOdometer } from "@/features/workday/utils/validateOdometer";
+import { useWorkdayStore } from "@/features/workday/stores/useWorkdayStore";
 
 export function WorkdayStartPage() {
   const navigate = useNavigate();
   const [odometer, setOdometer] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const startWorkday = useWorkdayStore((s) => s.startWorkday);
 
   function handleStart() {
     const validationError = validateOdometer(odometer);
@@ -21,6 +23,7 @@ export function WorkdayStartPage() {
     }
 
     setError(null);
+    startWorkday(Number(odometer));
     navigate("/");
   }
 
