@@ -4,13 +4,21 @@ import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { PageHeader } from "@/shared/layout/PageHeader";
 import { Button } from "@/components/ui/button";
-import { profileMock, type UserProfile } from "@/features/profile/mock/profileMock";
+import { useQuery } from "@tanstack/react-query";
+import { getProfile, type UserProfile } from "@/services/profileService";
 
 export function ProfilePage() {
-  const [profile, setProfile] = useState<UserProfile>(profileMock);
-  const [preview, setPreview] = useState<string | null>(profile.avatarUrl);
+  const { data: profileData } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+  });
+
+  const [profile, setProfile] = useState<UserProfile | null>(profileData ?? null);
+  const [preview, setPreview] = useState<string | null>(profileData?.avatarUrl ?? null);
   const [saved, setSaved] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  if (!profile) return null;
 
   const initial = profile.displayName?.charAt(0).toUpperCase() || "?";
 
@@ -60,7 +68,7 @@ export function ProfilePage() {
                 type="text"
                 placeholder="Seu nome"
                 value={profile.displayName}
-                onChange={(e) => setProfile((prev) => ({ ...prev, displayName: e.target.value }))}
+                onChange={(e) => setProfile((prev) => (prev ? { ...prev, displayName: e.target.value } : prev))}
                 className="bg-transparent text-sm font-medium text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
@@ -76,7 +84,7 @@ export function ProfilePage() {
                 type="email"
                 placeholder="seu@email.com"
                 value={profile.email}
-                onChange={(e) => setProfile((prev) => ({ ...prev, email: e.target.value }))}
+                onChange={(e) => setProfile((prev) => (prev ? { ...prev, displayName: e.target.value } : prev))}
                 className="bg-transparent text-sm font-medium text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
@@ -92,7 +100,7 @@ export function ProfilePage() {
                 type="tel"
                 placeholder="(00) 00000-0000"
                 value={profile.phone}
-                onChange={(e) => setProfile((prev) => ({ ...prev, phone: e.target.value }))}
+                onChange={(e) => setProfile((prev) => (prev ? { ...prev, displayName: e.target.value } : prev))}
                 className="bg-transparent text-sm font-medium text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
