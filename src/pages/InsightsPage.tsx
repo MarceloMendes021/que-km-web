@@ -5,14 +5,20 @@ import { PageHeader } from "@/shared/layout/PageHeader";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
 import { History, Target, TrendingUp, Zap, Award, BarChart2 } from "lucide-react";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
-import { insightsMock } from "@/features/insights/mock/insightsMock";
+import { useQuery } from "@tanstack/react-query";
+import { getMonthlyInsights } from "@/services/insightsService";
 
 const DONUT_COLORS = ["#00e676", "#ff453a"];
 const BAR_COLORS = ["#CCCCCC", "#F5A623", "#a78bfa"];
 
 export function InsightsPage() {
   const navigate = useNavigate();
-  const data = insightsMock;
+  const { data } = useQuery({
+    queryKey: ["insights"],
+    queryFn: () => getMonthlyInsights(""),
+  });
+
+  if (!data) return null;
 
   const donutData = [
     { name: "Lucro", value: data.netProfit },
