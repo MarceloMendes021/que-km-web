@@ -5,16 +5,13 @@ import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { PageHeader } from "@/shared/layout/PageHeader";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
-import { expensesMock, CATEGORY_CONFIG, type Expense } from "@/features/expenses/mock/expensesMock";
 import { ExpenseSheet } from "@/features/expenses/components/ExpenseSheet";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { useQuery } from "@tanstack/react-query";
+import { getExpenses, CATEGORY_CONFIG, type Expense } from "@/services/expensesService";
+import { getRecentMonths } from "@/shared/utils/getRecentMonths";
 
-const MONTHS = [
-  { label: "Março", value: "2026-03" },
-  { label: "Fevereiro", value: "2026-02" },
-  { label: "Janeiro", value: "2026-01" },
-  { label: "Dezembro", value: "2025-12" },
-];
+const MONTHS = getRecentMonths();
 
 function groupByCategory(expenses: Expense[]) {
   const groups: Record<string, number> = {};
@@ -33,7 +30,10 @@ export function ExpensesPage() {
   const [selectedMonth, setSelectedMonth] = useState(MONTHS[0].value);
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  const filteredExpenses = expensesMock.filter((e) => e.date.startsWith(selectedMonth));
+  const { data: filteredExpenses = [] } = useQuery({
+    queryKey: ["expenses", selectedMonth],
+    queryFn: () => getExpenses(selectedMonth),
+  });
   const chartData = groupByCategory(filteredExpenses);
   const totalExpenses = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
 
