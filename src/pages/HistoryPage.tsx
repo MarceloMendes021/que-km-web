@@ -7,13 +7,9 @@ import { PageHeader } from "@/shared/layout/PageHeader";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { historyMock, calculateWorkdayMetrics, type WorkdayHistory } from "@/features/history/mock/historyMock";
+import { getRecentMonths } from "@/shared/utils/getRecentMonths";
 
-const MONTHS = [
-  { label: "Março", value: "2026-03" },
-  { label: "Fevereiro", value: "2026-02" },
-  { label: "Janeiro", value: "2026-01" },
-  { label: "Dezembro", value: "2025-12" },
-];
+const MONTHS = getRecentMonths();
 
 function formatDate(dateStr: string): string {
   const [yyyy, mm, dd] = dateStr.split("-");
