@@ -6,8 +6,9 @@ import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { PageHeader } from "@/shared/layout/PageHeader";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { historyMock, calculateWorkdayMetrics, type WorkdayHistory } from "@/features/history/mock/historyMock";
 import { getRecentMonths } from "@/shared/utils/getRecentMonths";
+import { useQuery } from "@tanstack/react-query";
+import { getWorkdayHistory, calculateWorkdayMetrics, type WorkdayHistory } from "@/services/historyService";
 
 const MONTHS = getRecentMonths();
 
@@ -80,7 +81,10 @@ function WorkdayItem({ workday, isFirst, isLast }: { workday: WorkdayHistory; is
 export function HistoryPage() {
   const [selectedMonth, setSelectedMonth] = useState(MONTHS[0].value);
 
-  const filteredHistory = historyMock.filter((w) => w.date.startsWith(selectedMonth));
+  const { data: filteredHistory = [] } = useQuery({
+    queryKey: ["history", selectedMonth],
+    queryFn: () => getWorkdayHistory(selectedMonth),
+  });
 
   return (
     <main className="fixed inset-0 flex flex-col bg-(--background) text-(--text-primary)">
