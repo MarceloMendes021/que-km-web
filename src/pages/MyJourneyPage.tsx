@@ -5,7 +5,8 @@ import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { PageHeader } from "@/shared/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { useCurrencyInput } from "@/shared/hooks/useCurrencyInput";
-import { journeyConfigMock, type JourneyConfig, type FuelType } from "@/features/journey/mock/journeyConfigMock";
+import { useQuery } from "@tanstack/react-query";
+import { getJourneyConfig, type JourneyConfig, type FuelType } from "@/services/journeyConfigService";
 
 const FUEL_OPTIONS: { value: FuelType; label: string }[] = [
   { value: "gasolina", label: "Gasolina" },
@@ -16,10 +17,19 @@ const FUEL_OPTIONS: { value: FuelType; label: string }[] = [
 ];
 
 export function MyJourneyPage() {
-  const [config, setConfig] = useState<JourneyConfig>(journeyConfigMock);
-  const [saved, setSaved] = useState(false);
+  const { data: config, isLoading } = useQuery({
+    queryKey: ["journeyConfig"],
+    queryFn: getJourneyConfig,
+  });
 
+  const [localConfig, setLocalConfig] = useState<Partial<JourneyConfig>>({});
+  const [saved, setSaved] = useState(false);
   const monthGoalInput = useCurrencyInput();
+
+  const merged = config ? { ...config, ...localConfig } : null;
+
+  if (isLoading) return <p className="text-center pt-40 text-(--text-secondary)">Carregando...</p>;
+  if (!merged) return null;
 
   function handleSave() {
     setSaved(true);
@@ -49,8 +59,8 @@ export function MyJourneyPage() {
                   id="car-model"
                   type="text"
                   placeholder="Ex: Onix 1.0 2022"
-                  value={config.carModel}
-                  onChange={(e) => setConfig((prev) => ({ ...prev, carModel: e.target.value }))}
+                  value={merged.carModel}
+                  onChange={(e) => setLocalConfig((prev) => ({ ...prev, carModel: e.target.value }))}
                   className="bg-transparent text-sm font-medium text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
                 />
               </div>
@@ -60,8 +70,8 @@ export function MyJourneyPage() {
               <div className="flex flex-col gap-1 flex-1">
                 <span className="text-xs text-(--text-secondary)">Tipo de combustível</span>
                 <select
-                  value={config.fuelType}
-                  onChange={(e) => setConfig((prev) => ({ ...prev, fuelType: e.target.value as FuelType }))}
+                  value={merged.fuelType}
+                  onChange={(e) => setLocalConfig((prev) => ({ ...prev, fuelType: e.target.value as FuelType }))}
                   className="bg-transparent text-sm font-medium text-(--text-primary) outline-none"
                 >
                   {FUEL_OPTIONS.map((opt) => (
@@ -83,8 +93,8 @@ export function MyJourneyPage() {
                     type="number"
                     inputMode="decimal"
                     placeholder="10"
-                    value={config.avgConsumption || ""}
-                    onChange={(e) => setConfig((prev) => ({ ...prev, avgConsumption: parseFloat(e.target.value) || 0 }))}
+                    value={merged.avgConsumption || ""}
+                    onChange={(e) => setLocalConfig((prev) => ({ ...prev, avgConsumption: parseFloat(e.target.value) || 0 }))}
                     onKeyDown={(e) => {
                       if (["e", "E", "+", "-"].includes(e.key)) e.preventDefault();
                     }}
@@ -134,8 +144,8 @@ export function MyJourneyPage() {
                   type="number"
                   inputMode="numeric"
                   placeholder="22"
-                  value={config.plannedDays || ""}
-                  onChange={(e) => setConfig((prev) => ({ ...prev, plannedDays: parseInt(e.target.value) || 0 }))}
+                  value={merged.plannedDays || ""}
+                  onChange={(e) => setLocalConfig((prev) => ({ ...prev, plannedDays: parseInt(e.target.value) || 0 }))}
                   onKeyDown={(e) => {
                     if (["e", "E", "+", "-", "."].includes(e.key)) e.preventDefault();
                   }}
@@ -157,8 +167,8 @@ export function MyJourneyPage() {
                   type="number"
                   inputMode="decimal"
                   placeholder="1,50"
-                  value={config.minValuePerKm || ""}
-                  onChange={(e) => setConfig((prev) => ({ ...prev, minValuePerKm: parseFloat(e.target.value) || 0 }))}
+                  value={merged.minValuePerKm || ""}
+                  onChange={(e) => setLocalConfig((prev) => ({ ...prev, minValuePerKm: parseFloat(e.target.value) || 0 }))}
                   onKeyDown={(e) => {
                     if (["e", "E", "+", "-"].includes(e.key)) e.preventDefault();
                   }}
