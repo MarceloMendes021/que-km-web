@@ -3,7 +3,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/shared/components/DatePicker";
 import { useCurrencyInput } from "@/shared/hooks/useCurrencyInput";
-import { CATEGORY_CONFIG, PAYMENT_METHOD_CONFIG, type ExpenseCategory, type PaymentMethod } from "@/features/expenses/mock/expensesMock";
+import { CATEGORY_CONFIG, PAYMENT_METHOD_CONFIG, type ExpenseCategory, type PaymentMethod } from "@/services/expensesService";
+import { addExpense } from "@/services/expensesService";
 
 type Props = {
   open: boolean;
@@ -26,7 +27,7 @@ export function ExpenseSheet({ open, onClose }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const { displayValue, rawValue, handleChange } = useCurrencyInput();
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const newErrors: Record<string, string> = {};
 
     if (!category) newErrors.category = "Selecione uma categoria";
@@ -41,7 +42,13 @@ export function ExpenseSheet({ open, onClose }: Props) {
       return;
     }
 
-    console.log({ category, amount: rawValue, description, date, paymentMethod });
+    await addExpense({
+      category: category as ExpenseCategory,
+      amount: parseFloat(rawValue),
+      description,
+      date,
+      paymentMethod: paymentMethod as PaymentMethod,
+    });
     handleClose();
   }
 
