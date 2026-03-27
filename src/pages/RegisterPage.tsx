@@ -75,7 +75,7 @@ export function RegisterPage() {
 
   function handleRegister() {
     if (!validate()) return;
-    navigate("/");
+    navigate("/onboarding");
   }
 
   return (
