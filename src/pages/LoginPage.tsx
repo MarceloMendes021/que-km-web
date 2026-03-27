@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/shared/hooks/useAuthStore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,15 +12,19 @@ export function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
+  const login = useAuthStore((s) => s.login);
+
   function handleChange(field: "email" | "password", value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
   function handleEmailLogin() {
+    login();
     navigate("/");
   }
 
   function handleSocialLogin() {
+    login();
     navigate("/");
   }
 
