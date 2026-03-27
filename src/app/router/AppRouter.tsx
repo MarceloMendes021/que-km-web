@@ -13,11 +13,15 @@ import { RegisterPage } from "@/pages/RegisterPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { MyJourneyPage } from "@/pages/MyJourneyPage";
 import { OnboardingPage } from "@/pages/OnboardingPage";
+import { ForgotPasswordPage } from "@/pages/ForgotPasswordPage";
+import { HelpPage } from "@/pages/HelpPage";
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
   { path: "/onboarding", element: <OnboardingPage /> },
+  { path: "/forgot-password", element: <ForgotPasswordPage /> },
+  { path: "/help", element: <HelpPage /> },
 
   {
     path: "/",
