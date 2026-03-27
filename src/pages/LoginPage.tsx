@@ -19,12 +19,12 @@ export function LoginPage() {
   }
 
   function handleEmailLogin() {
-    login();
+    login({ name: form.email.split("@")[0], avatarUrl: null });
     navigate("/");
   }
 
   function handleSocialLogin() {
-    login();
+    login({ name: "Usuário", avatarUrl: null });
     navigate("/");
   }
 

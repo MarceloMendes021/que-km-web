@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { User, Briefcase, HelpCircle, Info, LogOut } from "lucide-react";
+import { useAuthStore } from "@/shared/hooks/useAuthStore";
 
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
@@ -9,24 +10,26 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 export function UserMenu() {
   const [open, setOpen] = useState(false);
 
-  const userName = "Marcelo";
+  const user = useAuthStore((s) => s.user);
+  const userName = user?.name ?? "Usuário";
+  const userInitials = userName.slice(0, 2).toUpperCase();
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <button type="button" className="flex items-center justify-center rounded-full">
           <Avatar className="h-10 w-10">
-            <AvatarImage src="/avatar.png" />
-            <AvatarFallback>MA</AvatarFallback>
+            <AvatarImage src={user?.avatarUrl ?? ""} />
+            <AvatarFallback>{userInitials}</AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent side="bottom" align="end" sideOffset={-40} alignOffset={0} className="w-52 bg-(--background) border-(--border) rounded-md shadow-lg">
         <div className="flex items-center gap-3 px-3 py-3">
-          <Avatar className="h-10 w-10 border-2 border-(--primary)">
-            <AvatarImage src="/avatar.png" />
-            <AvatarFallback>MA</AvatarFallback>
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={user?.avatarUrl ?? ""} />
+            <AvatarFallback>{userInitials}</AvatarFallback>
           </Avatar>
           <span className="text-sm font-semibold">Olá, {userName}</span>
         </div>
