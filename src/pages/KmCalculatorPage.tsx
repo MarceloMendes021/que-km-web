@@ -5,6 +5,8 @@ import { PageHeader } from "@/shared/layout/PageHeader";
 import { Calculator } from "lucide-react";
 import { CalculatorResult } from "@/features/tools/km-calculator/components/CalculatorResult";
 import { calculateRideValue, type RideResult } from "@/features/tools/km-calculator/utils/calculateRideValue";
+import { useWorkdayStore } from "@/features/workday/stores/useWorkdayStore";
+import { DEFAULT_THRESHOLDS } from "@/features/tools/km-calculator/utils/calculateRideValue";
 
 export function KmCalculatorPage() {
   const [price, setPrice] = useState("");
@@ -15,7 +17,9 @@ export function KmCalculatorPage() {
 
   const isValidInput = Number.isFinite(priceNumber) && Number.isFinite(distanceNumber) && priceNumber > 0 && distanceNumber > 0;
 
-  const result: RideResult | null = isValidInput ? calculateRideValue(priceNumber, distanceNumber) : null;
+  const thresholds = useWorkdayStore((s) => s.thresholds) ?? DEFAULT_THRESHOLDS;
+
+  const result: RideResult | null = isValidInput ? calculateRideValue(priceNumber, distanceNumber, thresholds) : null;
 
   return (
     <main className="fixed inset-0 bg-(--background) pt-24 pb-28 text-(--text-primary)">
@@ -48,6 +52,7 @@ export function KmCalculatorPage() {
               onChange={(e) => setDistance(e.target.value)}
               onKeyDown={(e) => {
                 if (["e", "E", "+", "-"].includes(e.key)) e.preventDefault();
+                if (e.key === "Enter") (e.target as HTMLInputElement).blur();
               }}
               className="h-14 text-lg! rounded-md mt-2 border border-(--border) bg-(--surface) px-4"
             />

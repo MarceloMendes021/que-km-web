@@ -5,19 +5,24 @@ export type RideResult = {
   rating: RideRating;
 };
 
-const THRESHOLDS = {
+export type RideThresholds = {
+  good: number;
+  acceptable: number;
+};
+
+export const DEFAULT_THRESHOLDS: RideThresholds = {
   good: 1.5,
   acceptable: 1.4,
 };
 
-export function calculateRideValue(price: number, distance: number): RideResult {
+export function calculateRideValue(price: number, distance: number, thresholds: RideThresholds = DEFAULT_THRESHOLDS): RideResult {
   const valuePerKm = price / distance;
 
   let rating: RideRating;
 
-  if (valuePerKm >= THRESHOLDS.good) {
+  if (valuePerKm >= thresholds.good) {
     rating = "good";
-  } else if (valuePerKm >= THRESHOLDS.acceptable) {
+  } else if (valuePerKm >= thresholds.acceptable) {
     rating = "acceptable";
   } else {
     rating = "poor";
