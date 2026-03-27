@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ProtectedRoute } from "@/app/ProtectedRoute";
 import { HomePage } from "@/pages/HomePage";
 import { LoginPage } from "@/pages/LoginPage";
 import { InsightsPage } from "@/pages/InsightsPage";
@@ -11,55 +12,92 @@ import { ExpensesPage } from "@/pages/ExpensesPage";
 import { RegisterPage } from "@/pages/RegisterPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { MyJourneyPage } from "@/pages/MyJourneyPage";
+import { OnboardingPage } from "@/pages/OnboardingPage";
 
 const router = createBrowserRouter([
+  { path: "/login", element: <LoginPage /> },
+  { path: "/register", element: <RegisterPage /> },
+  { path: "/onboarding", element: <OnboardingPage /> },
+
   {
     path: "/",
-    element: <HomePage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
+    element: (
+      <ProtectedRoute>
+        <HomePage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/insights",
-    element: <InsightsPage />,
+    element: (
+      <ProtectedRoute>
+        <InsightsPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/history",
-    element: <HistoryPage />,
+    element: (
+      <ProtectedRoute>
+        <HistoryPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/workday/start",
-    element: <WorkdayStartPage />,
+    element: (
+      <ProtectedRoute>
+        <WorkdayStartPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/workday/finish",
-    element: <WorkdayFinishPage />,
+    element: (
+      <ProtectedRoute>
+        <WorkdayFinishPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/workday/result",
-    element: <WorkdayResultPage />,
+    element: (
+      <ProtectedRoute>
+        <WorkdayResultPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/km-calculator",
-    element: <KmCalculatorPage />,
+    element: (
+      <ProtectedRoute>
+        <KmCalculatorPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/expenses",
-    element: <ExpensesPage />,
+    element: (
+      <ProtectedRoute>
+        <ExpensesPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/profile",
-    element: <ProfilePage />,
+    element: (
+      <ProtectedRoute>
+        <ProfilePage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/my-journey",
-    element: <MyJourneyPage />,
+    element: (
+      <ProtectedRoute>
+        <MyJourneyPage />
+      </ProtectedRoute>
+    ),
   },
 ]);
 
