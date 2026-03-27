@@ -35,6 +35,8 @@ export function WorkdayFinishPage() {
   const mainApps = WORKDAY_APPS.filter((app) => app.id !== "particular");
   const particularApp = WORKDAY_APPS.find((app) => app.id === "particular");
 
+  const startOdometer = useWorkdayStore((s) => s.startOdometer);
+
   function handleFinish() {
     const data: WorkdayFinishData = {
       finalOdometer,
@@ -55,8 +57,6 @@ export function WorkdayFinishPage() {
 
     navigate("/workday/result", { state: { result } });
   }
-
-  const startOdometer = useWorkdayStore((s) => s.startOdometer);
 
   return (
     <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
