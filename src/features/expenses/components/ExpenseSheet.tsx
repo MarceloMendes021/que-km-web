@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,8 @@ export function ExpenseSheet({ open, onClose }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const { displayValue, rawValue, handleChange } = useCurrencyInput();
 
+  const queryClient = useQueryClient();
+
   async function handleSubmit() {
     const newErrors: Record<string, string> = {};
 
@@ -49,6 +52,9 @@ export function ExpenseSheet({ open, onClose }: Props) {
       date,
       paymentMethod: paymentMethod as PaymentMethod,
     });
+
+    await queryClient.invalidateQueries({ queryKey: ["expenses"] });
+
     handleClose();
   }
 
