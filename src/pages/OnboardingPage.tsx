@@ -72,8 +72,7 @@ export function OnboardingPage() {
       return;
     }
 
-    // último step — conclui onboarding
-    login();
+    login({ name: form.carModel.split(" ")[0], avatarUrl: null });
     navigate("/");
   }
 
@@ -87,7 +86,6 @@ export function OnboardingPage() {
   return (
     <main className="min-h-dvh bg-(--background) px-6 pb-8 text-(--text-primary)">
       <div className="mx-auto w-full max-w-md">
-        {/* header com progresso */}
         <div className="flex items-center justify-between pt-14 pb-8">
           <button
             type="button"
@@ -112,7 +110,6 @@ export function OnboardingPage() {
           </span>
         </div>
 
-        {/* conteúdo do step */}
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -130,7 +127,6 @@ export function OnboardingPage() {
               <p className="text-sm text-(--text-secondary)">{STEPS[step].subtitle}</p>
             </div>
 
-            {/* step 0 — veículo */}
             {step === 0 && (
               <div className="flex flex-col gap-3">
                 <div className="flex flex-col gap-1">
@@ -152,7 +148,6 @@ export function OnboardingPage() {
               </div>
             )}
 
-            {/* step 1 — combustível */}
             {step === 1 && (
               <div className="flex flex-col gap-3">
                 <div className="flex flex-col gap-1">
@@ -191,7 +186,6 @@ export function OnboardingPage() {
               </div>
             )}
 
-            {/* step 2 — metas */}
             {step === 2 && (
               <div className="flex flex-col gap-3">
                 <div className="flex flex-col gap-1">
