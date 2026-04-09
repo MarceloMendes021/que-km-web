@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Car, Fuel, Target, TrendingUp, ChevronRight, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCurrencyInput } from "@/shared/hooks/useCurrencyInput";
-import { useAuthStore } from "@/shared/hooks/useAuthStore";
+
 import type { FuelType } from "@/services/journeyConfigService";
 
 const FUEL_OPTIONS: { value: FuelType; label: string }[] = [
@@ -23,7 +23,6 @@ const STEPS = [
 
 export function OnboardingPage() {
   const navigate = useNavigate();
-  const login = useAuthStore((s) => s.login);
 
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
@@ -72,7 +71,6 @@ export function OnboardingPage() {
       return;
     }
 
-    login({ name: form.carModel.split(" ")[0], avatarUrl: null });
     navigate("/");
   }
 
