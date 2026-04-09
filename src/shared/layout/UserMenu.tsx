@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { User, Briefcase, HelpCircle, Info, LogOut } from "lucide-react";
-import { useAuthStore } from "@/shared/hooks/useAuthStore";
+import { useUser, useClerk } from "@clerk/clerk-react";
 
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
@@ -10,8 +10,9 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 export function UserMenu() {
   const [open, setOpen] = useState(false);
 
-  const user = useAuthStore((s) => s.user);
-  const userName = user?.name ?? "Usuário";
+  const { user } = useUser();
+  const { signOut } = useClerk();
+  const userName = user?.fullName ?? "Usuário";
   const userInitials = userName.slice(0, 2).toUpperCase();
 
   return (
@@ -19,7 +20,7 @@ export function UserMenu() {
       <DropdownMenuTrigger asChild>
         <button type="button" className="flex items-center justify-center rounded-full">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={user?.avatarUrl ?? ""} />
+            <AvatarImage src={user?.imageUrl ?? ""} />
             <AvatarFallback>{userInitials}</AvatarFallback>
           </Avatar>
         </button>
@@ -28,7 +29,7 @@ export function UserMenu() {
       <DropdownMenuContent side="bottom" align="end" sideOffset={-40} alignOffset={0} className="w-52 bg-(--background) border-(--border) rounded-md shadow-lg">
         <div className="flex items-center gap-3 px-3 py-3">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={user?.avatarUrl ?? ""} />
+            <AvatarImage src={user?.imageUrl ?? ""} />
             <AvatarFallback>{userInitials}</AvatarFallback>
           </Avatar>
           <span className="text-sm font-semibold">Olá, {userName}</span>
@@ -66,7 +67,7 @@ export function UserMenu() {
 
         <DropdownMenuSeparator className="mt-2" />
 
-        <DropdownMenuItem className="flex items-center gap-3 py-2 mt-1 text-(--danger)">
+        <DropdownMenuItem className="flex items-center gap-3 py-2 mt-1 text-(--danger)" onClick={() => signOut()}>
           <LogOut className="h-4 w-4" />
           Sair
         </DropdownMenuItem>
