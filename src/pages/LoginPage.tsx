@@ -1,35 +1,46 @@
-import { useAuthStore } from "@/shared/hooks/useAuthStore";
+import { useSignIn } from "@clerk/clerk-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const { signIn, isLoaded } = useSignIn();
 
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
-  const login = useAuthStore((s) => s.login);
+  if (!isLoaded || !signIn) return null;
 
   function handleChange(field: "email" | "password", value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
-  function handleEmailLogin() {
-    login({ name: form.email.split("@")[0], avatarUrl: null });
+  async function handleEmailLogin() {
+    await signIn!.create({
+      identifier: form.email,
+      password: form.password,
+    });
     navigate("/");
   }
 
-  function handleSocialLogin() {
-    login({ name: "Usuário", avatarUrl: null });
-    navigate("/");
+  function handleSocialLoginGoogle() {
+    signIn!.authenticateWithRedirect({
+      strategy: "oauth_google",
+      redirectUrl: "/sso-callback",
+      redirectUrlComplete: "/",
+    });
   }
 
-  function handleRegister() {
-    navigate("/register");
+  function handleSocialLoginApple() {
+    signIn!.authenticateWithRedirect({
+      strategy: "oauth_apple",
+      redirectUrl: "/sso-callback",
+      redirectUrlComplete: "/",
+    });
   }
 
   return (
@@ -45,7 +56,7 @@ export function LoginPage() {
           <div className="flex w-full flex-col gap-3">
             <Button
               type="button"
-              onClick={handleSocialLogin}
+              onClick={handleSocialLoginApple}
               className="flex h-14 w-full items-center justify-center gap-3 rounded-xl border border-(--border) bg-(--surface) text-sm font-medium text-(--text-primary) hover:bg-(--surface)/80"
             >
               <img className="h-5 w-5" src="/icons/apple-icon.svg" alt="Apple" />
@@ -54,7 +65,7 @@ export function LoginPage() {
 
             <Button
               type="button"
-              onClick={handleSocialLogin}
+              onClick={handleSocialLoginGoogle}
               className="flex h-14 w-full items-center justify-center gap-3 rounded-xl border border-(--border) bg-(--surface) text-sm font-medium text-(--text-primary) hover:bg-(--surface)/80"
             >
               <img className="h-5 w-5" src="/icons/google-icon.svg" alt="Google" />
@@ -123,9 +134,9 @@ export function LoginPage() {
               </button>
             )}
 
-            <button type="button" onClick={handleRegister} className="mt-1 text-center text-sm text-(--text-secondary)">
+            <Link to="/register" className="mt-1 text-center text-sm text-(--text-secondary)">
               Novo por aqui? <span className="font-semibold text-(--primary)">Criar conta</span>
-            </button>
+            </Link>
           </div>
         </section>
 
