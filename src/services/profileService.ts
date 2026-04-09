@@ -1,15 +1,17 @@
-import { profileMock } from "@/features/profile/mock/profileMock";
-import type { UserProfile } from "@/features/profile/mock/profileMock";
-export type { UserProfile };
+import api from "@/services/apiClient";
 
-export async function getProfile(): Promise<UserProfile> {
-  await new Promise((r) => setTimeout(r, 300));
-  return profileMock;
+export interface UserProfile {
+  displayName: string;
+  avatarUrl: string | null;
+  phone: string | null;
 }
 
-export async function updateProfile(data: Partial<UserProfile>): Promise<UserProfile> {
-  await new Promise((r) => setTimeout(r, 300));
+export async function getProfile() {
+  const response = await api.get("/api/profile");
+  return response.data;
+}
 
-  Object.assign(profileMock, data);
-  return profileMock;
+export async function updateProfile(data: Partial<UserProfile>) {
+  const response = await api.patch("/api/profile", data);
+  return response.data;
 }
