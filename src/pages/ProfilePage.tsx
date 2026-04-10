@@ -57,7 +57,7 @@ export function ProfilePage() {
                 type="text"
                 placeholder="Seu nome"
                 value={currentForm.displayName}
-                onChange={(e) => setForm((prev) => (prev ? { ...prev, displayName: e.target.value } : prev))}
+                onChange={(e) => setForm((prev) => ({ ...(prev ?? currentForm), displayName: e.target.value }))}
                 className="bg-transparent text-sm font-medium text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
@@ -73,7 +73,7 @@ export function ProfilePage() {
                 type="tel"
                 placeholder="(00) 00000-0000"
                 value={currentForm.phone ?? ""}
-                onChange={(e) => setForm((prev) => (prev ? { ...prev, phone: e.target.value } : prev))}
+                onChange={(e) => setForm((prev) => ({ ...(prev ?? currentForm), phone: e.target.value }))}
                 className="bg-transparent text-sm font-medium text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               />
             </div>
