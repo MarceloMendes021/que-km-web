@@ -1,9 +1,10 @@
-import { historyMock, calculateWorkdayMetrics } from "@/features/history/mock/historyMock";
-import type { WorkdayHistory } from "@/features/history/mock/historyMock";
+import api from "@/services/apiClient";
+import type { WorkdayHistory } from "@/features/history/utils/historyUtils";
+import { calculateWorkdayMetrics } from "@/features/history/utils/historyUtils";
 
-export async function getWorkdayHistory(month: string): Promise<WorkdayHistory[]> {
-  await new Promise((r) => setTimeout(r, 300));
-  return historyMock.filter((w) => w.date.startsWith(month));
+export async function getWorkdayHistory(month: string) {
+  const response = await api.get("/api/workdays", { params: { month } });
+  return response.data;
 }
 
 export { calculateWorkdayMetrics };
