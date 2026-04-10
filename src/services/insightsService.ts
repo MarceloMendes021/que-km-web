@@ -1,10 +1,20 @@
-import { insightsMock } from "@/features/insights/mock/insightsMock";
+import api from "@/services/apiClient";
 
-export type InsightsSummary = typeof insightsMock;
+export interface InsightsSummary {
+  totalEarnings: number;
+  totalExpenses: number;
+  netProfit: number;
+  earningsByApp: { app: string; value: number }[];
+  monthGoal: number;
+  workedDays: number;
+  plannedDays: number;
+  averageProfitPerDay: number;
+  daysRemainingInMonth: number;
+  averageEarningsPerKm: number;
+  suggestedMinPerKm: number;
+}
 
-export async function getMonthlyInsights(month: string): Promise<InsightsSummary> {
-  await new Promise((r) => setTimeout(r, 300));
-
-  void month;
-  return insightsMock;
+export async function getMonthlyInsights(month: string) {
+  const response = await api.get("/api/insights", { params: { month } });
+  return response.data;
 }
