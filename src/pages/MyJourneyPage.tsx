@@ -5,8 +5,8 @@ import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { PageHeader } from "@/shared/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { useCurrencyInput } from "@/shared/hooks/useCurrencyInput";
-import { useQuery } from "@tanstack/react-query";
-import { getJourneyConfig, type JourneyConfig, type FuelType } from "@/services/journeyConfigService";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { getJourneyConfig, updateJourneyConfig, type JourneyConfig, type FuelType } from "@/services/journeyConfigService";
 
 const FUEL_OPTIONS: { value: FuelType; label: string }[] = [
   { value: "gasolina", label: "Gasolina" },
@@ -28,14 +28,18 @@ export function MyJourneyPage() {
 
   const merged = config ? { ...config, ...localConfig } : null;
 
+  const mutation = useMutation({
+    mutationFn: (data: Partial<JourneyConfig>) => updateJourneyConfig(data),
+    onSuccess: () => setSaved(true),
+  });
+
   if (isLoading) return <p className="text-center pt-40 text-(--text-secondary)">Carregando...</p>;
   if (!merged) return null;
 
   function handleSave() {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    if (!merged) return;
+    mutation.mutate(merged);
   }
-
   return (
     <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
