@@ -1,15 +1,22 @@
-import { journeyConfigMock } from "@/features/journey/mock/journeyConfigMock";
-import type { JourneyConfig, FuelType } from "@/features/journey/mock/journeyConfigMock";
-export type { JourneyConfig, FuelType };
+import api from "@/services/apiClient";
 
-export async function getJourneyConfig(): Promise<JourneyConfig> {
-  await new Promise((r) => setTimeout(r, 300));
-  return journeyConfigMock;
+export type FuelType = "gasolina" | "etanol" | "flex" | "gnv" | "diesel";
+
+export interface JourneyConfig {
+  carModel: string;
+  fuelType: FuelType;
+  avgConsumption: number;
+  monthGoal: number;
+  plannedDays: number;
+  minValuePerKm: number;
 }
 
-export async function updateJourneyConfig(data: Partial<JourneyConfig>): Promise<JourneyConfig> {
-  await new Promise((r) => setTimeout(r, 300));
+export async function getJourneyConfig() {
+  const response = await api.get("/api/journey-config");
+  return response.data;
+}
 
-  Object.assign(journeyConfigMock, data);
-  return journeyConfigMock;
+export async function updateJourneyConfig(data: Partial<JourneyConfig>) {
+  const response = await api.put("/api/journey-config", data);
+  return response.data;
 }
