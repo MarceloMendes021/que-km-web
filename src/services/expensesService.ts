@@ -1,19 +1,21 @@
-import { expensesMock } from "@/features/expenses/mock/expensesMock";
-import type { Expense, ExpenseCategory, PaymentMethod } from "@/features/expenses/mock/expensesMock";
-export { CATEGORY_CONFIG, PAYMENT_METHOD_CONFIG } from "@/features/expenses/mock/expensesMock";
+import api from "@/services/apiClient";
+import { PAYMENT_METHOD_CONFIG, CATEGORY_CONFIG } from "@/features/expenses/utils/expensesUtils";
+import type { Expense, ExpenseCategory, PaymentMethod } from "@/features/expenses/utils/expensesUtils";
+
+export async function getExpenses(month: string) {
+  const response = await api.get("/api/expenses", { params: { month } });
+  return response.data;
+}
+
+export async function addExpense(data: Omit<Expense, "id">) {
+  const response = await api.post("/api/expenses", data);
+  return response.data;
+}
+
+export async function deleteExpenses(id: string) {
+  const response = await api.delete(`/api/expenses/${id}`);
+  return response.data;
+}
+
+export { PAYMENT_METHOD_CONFIG, CATEGORY_CONFIG };
 export type { Expense, ExpenseCategory, PaymentMethod };
-
-let localExpenses: Expense[] = [...expensesMock];
-
-export async function getExpenses(month: string): Promise<Expense[]> {
-  await new Promise((r) => setTimeout(r, 300));
-  return localExpenses.filter((e) => e.date.startsWith(month));
-}
-
-export async function addExpense(expense: Omit<Expense, "id">): Promise<Expense> {
-  await new Promise((r) => setTimeout(r, 300));
-
-  const newExpense: Expense = { ...expense, id: crypto.randomUUID() };
-  localExpenses = [...localExpenses, newExpense];
-  return newExpense;
-}
