@@ -123,7 +123,7 @@ export function HistoryPage() {
 
           {filteredHistory.length > 0 ? (
             <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) overflow-hidden">
-              {filteredHistory.map((workday, index) => (
+              {filteredHistory.map((workday: WorkdayHistory, index: number) => (
                 <WorkdayItem key={workday.id} workday={workday} isFirst={index === 0} isLast={index === filteredHistory.length - 1} />
               ))}
             </div>

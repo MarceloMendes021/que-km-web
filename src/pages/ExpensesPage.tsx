@@ -10,9 +10,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { useQuery } from "@tanstack/react-query";
 import { getExpenses, CATEGORY_CONFIG, type Expense } from "@/services/expensesService";
 import { getRecentMonths } from "@/shared/utils/getRecentMonths";
-
 const MONTHS = getRecentMonths();
-
 function groupByCategory(expenses: Expense[]) {
   const groups: Record<string, number> = {};
   expenses.forEach((expense) => {
@@ -25,7 +23,6 @@ function groupByCategory(expenses: Expense[]) {
     color: CATEGORY_CONFIG[category as keyof typeof CATEGORY_CONFIG].color,
   }));
 }
-
 export function ExpensesPage() {
   const [selectedMonth, setSelectedMonth] = useState(MONTHS[0].value);
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -35,8 +32,7 @@ export function ExpensesPage() {
     queryFn: () => getExpenses(selectedMonth),
   });
   const chartData = groupByCategory(filteredExpenses);
-  const totalExpenses = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
-
+  const totalExpenses = filteredExpenses.reduce((sum: number, e: Expense) => sum + e.amount, 0);
   return (
     <main className="min-h-dvh bg-(--background) pt-24 pb-36 text-(--text-primary)">
       <AppHeader />
@@ -105,7 +101,7 @@ export function ExpensesPage() {
 
         {filteredExpenses.length > 0 && (
           <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) divide-y divide-(--border)">
-            {filteredExpenses.map((expense) => {
+            {filteredExpenses.map((expense: Expense) => {
               const config = CATEGORY_CONFIG[expense.category];
               return (
                 <div key={expense.id} className="flex items-center justify-between px-4 py-4">

@@ -72,7 +72,7 @@ export function InsightsPage() {
               <XAxis dataKey="app" tick={{ fill: "#9ba1a6", fontSize: 12 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: "#9ba1a6", fontSize: 11 }} axisLine={false} tickLine={false} />
               <Bar dataKey="value" radius={[6, 6, 0, 0]}>
-                {data.earningsByApp.map((_, index) => (
+                {data.earningsByApp.map((_: { app: string; value: number }, index: number) => (
                   <Cell key={index} fill={BAR_COLORS[index % BAR_COLORS.length]} />
                 ))}
               </Bar>
