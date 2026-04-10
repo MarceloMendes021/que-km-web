@@ -7,6 +7,8 @@ interface WorkdayStore {
   startOdometer: number | null;
   startTime: string | null;
   thresholds: RideThresholds;
+  workdayId: string | null;
+  setWorkdayId: (id: string) => void;
 
   startWorkday: (odometer: number) => void;
   finishWorkday: () => void;
@@ -20,6 +22,7 @@ export const useWorkdayStore = create<WorkdayStore>()(
       startOdometer: null,
       startTime: null,
       thresholds: { good: 1.5, acceptable: 1.4 },
+      workdayId: null,
 
       startWorkday: (odometer) =>
         set({
@@ -28,11 +31,14 @@ export const useWorkdayStore = create<WorkdayStore>()(
           startTime: new Date().toISOString(),
         }),
 
+      setWorkdayId: (id) => set({ workdayId: id }),
+
       finishWorkday: () =>
         set({
           isActive: false,
           startOdometer: null,
           startTime: null,
+          workdayId: null,
         }),
 
       setThresholds: (thresholds) => set({ thresholds }),

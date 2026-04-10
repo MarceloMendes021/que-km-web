@@ -7,12 +7,24 @@ import { PageHeader } from "@/shared/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { validateOdometer } from "@/features/workday/utils/validateOdometer";
 import { useWorkdayStore } from "@/features/workday/stores/useWorkdayStore";
+import { startWorkday } from "@/services/workdayService";
+import { useMutation } from "@tanstack/react-query";
 
 export function WorkdayStartPage() {
   const navigate = useNavigate();
   const [odometer, setOdometer] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const startWorkday = useWorkdayStore((s) => s.startWorkday);
+  const setWorkdayId = useWorkdayStore((s) => s.setWorkdayId);
+  const activateWorkday = useWorkdayStore((s) => s.startWorkday);
+
+  const mutation = useMutation({
+    mutationFn: (odometer: number) => startWorkday(odometer),
+    onSuccess: (data) => {
+      setWorkdayId(data.id);
+      activateWorkday(Number(odometer));
+      navigate("/");
+    },
+  });
 
   function handleStart() {
     const validationError = validateOdometer(odometer);
@@ -23,8 +35,7 @@ export function WorkdayStartPage() {
     }
 
     setError(null);
-    startWorkday(Number(odometer));
-    navigate("/");
+    mutation.mutate(Number(odometer));
   }
 
   return (
