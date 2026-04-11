@@ -7,11 +7,22 @@ import { PageHeader } from "@/shared/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { WORKDAY_APPS } from "@/features/workday/config/apps";
 import { useCurrencyInput } from "@/shared/hooks/useCurrencyInput";
-import { validateWorkdayFinish, toCalculation, calculateDayResult, type WorkdayFinishData } from "@/features/workday/utils/validateWorkdayFinish";
+import { validateWorkdayFinish, type WorkdayFinishData } from "@/features/workday/utils/validateWorkdayFinish";
 import { useWorkdayStore } from "@/features/workday/stores/useWorkdayStore";
+import { useMutation } from "@tanstack/react-query";
+import { finishWorkday } from "@/services/workdayService";
 
 export function WorkdayFinishPage() {
   const navigate = useNavigate();
+
+  const workdayId = useWorkdayStore((s) => s.workdayId);
+
+  const mutation = useMutation({
+    mutationFn: (data: Parameters<typeof finishWorkday>[1]) => finishWorkday(workdayId!, data),
+    onSuccess: (result) => {
+      navigate("/workday/result", { state: { result } });
+    },
+  });
 
   const fuelInput = useCurrencyInput();
   const foodInput = useCurrencyInput();
@@ -35,8 +46,6 @@ export function WorkdayFinishPage() {
   const mainApps = WORKDAY_APPS.filter((app) => app.id !== "particular");
   const particularApp = WORKDAY_APPS.find((app) => app.id === "particular");
 
-  const startOdometer = useWorkdayStore((s) => s.startOdometer);
-
   function handleFinish() {
     const data: WorkdayFinishData = {
       finalOdometer,
@@ -46,16 +55,17 @@ export function WorkdayFinishPage() {
     };
 
     const validationErrors = validateWorkdayFinish(data);
-
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    const calculation = toCalculation(data);
-    const result = calculateDayResult(calculation, startOdometer ?? 0);
-
-    navigate("/workday/result", { state: { result } });
+    mutation.mutate({
+      finalOdometer: Number(finalOdometer),
+      earnings: Object.fromEntries(WORKDAY_APPS.map((app) => [app.id, parseFloat(earningInputs[app.id].rawValue || "0")])),
+      fuel: parseFloat(fuelInput.rawValue || "0"),
+      otherExpenses: parseFloat(foodInput.rawValue || "0") + parseFloat(otherExpensesInput.rawValue || "0"),
+    });
   }
 
   return (
