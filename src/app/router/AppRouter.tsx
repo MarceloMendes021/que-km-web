@@ -15,6 +15,7 @@ import { MyJourneyPage } from "@/pages/MyJourneyPage";
 import { OnboardingPage } from "@/pages/OnboardingPage";
 import { ForgotPasswordPage } from "@/pages/ForgotPasswordPage";
 import { HelpPage } from "@/pages/HelpPage";
+import { SSOCallbackPage } from "@/pages/SSOCallbackPage";
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
   { path: "/onboarding", element: <OnboardingPage /> },
   { path: "/forgot-password", element: <ForgotPasswordPage /> },
   { path: "/help", element: <HelpPage /> },
+  { path: "/sso-callback", element: <SSOCallbackPage /> },
 
   {
     path: "/",
