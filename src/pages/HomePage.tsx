@@ -4,7 +4,7 @@ import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { WorkdayActionButton } from "@/features/workday/components/WorkdayActionButton";
 import { Briefcase, Car } from "lucide-react";
-import { getCurrentMonth } from "@/shared/utils/getCurrentMonth";
+import { getCurrentMonth, getCurrentMonthParam } from "@/shared/utils/getCurrentMonth";
 import { useWorkdayStore } from "@/features/workday/stores/useWorkdayStore";
 import { useQuery } from "@tanstack/react-query";
 import { getMonthlyInsights } from "@/services/insightsService";
@@ -22,7 +22,7 @@ const capitalizedMonth = getCurrentMonth();
 export function HomePage() {
   const { data } = useQuery({
     queryKey: ["insights"],
-    queryFn: () => getMonthlyInsights(getCurrentMonth()),
+    queryFn: () => getMonthlyInsights(getCurrentMonthParam()),
   });
 
   const isActive = useWorkdayStore((s) => s.isActive);
