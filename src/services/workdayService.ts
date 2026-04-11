@@ -8,7 +8,7 @@ interface FinishWorkdayData {
 }
 
 export async function startWorkday(odometer: number) {
-  const response = await api.post("/api/workdays", { initialOdometer: odometer });
+  const response = await api.post("/api/workdays", { start_odometer: odometer });
   return response.data;
 }
 
