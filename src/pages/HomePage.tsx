@@ -6,6 +6,8 @@ import { WorkdayActionButton } from "@/features/workday/components/WorkdayAction
 import { Briefcase, Car } from "lucide-react";
 import { getCurrentMonth } from "@/shared/utils/getCurrentMonth";
 import { useWorkdayStore } from "@/features/workday/stores/useWorkdayStore";
+import { useQuery } from "@tanstack/react-query";
+import { getMonthlyInsights } from "@/services/insightsService";
 
 function getGreeting(name: string): string {
   const hour = new Date().getHours();
@@ -18,6 +20,11 @@ function getGreeting(name: string): string {
 const capitalizedMonth = getCurrentMonth();
 
 export function HomePage() {
+  const { data } = useQuery({
+    queryKey: ["insights"],
+    queryFn: () => getMonthlyInsights(getCurrentMonth()),
+  });
+
   const isActive = useWorkdayStore((s) => s.isActive);
   return (
     <main className="fixed inset-0 bg-(--background) pt-24 pb-28 text-(--text-primary)">
@@ -25,11 +32,11 @@ export function HomePage() {
       <section className="h-full overflow-hidden mt-4 px-4 space-y-4">
         <p className="text-lg font-semibold text-(--text-primary)">{getGreeting("Marcelo")}</p>
 
-        <MonthSummaryCard amount={1350} trend="positive" />
+        <MonthSummaryCard amount={data?.netProfit ?? 0} trend="positive" />
 
         <div className="grid grid-cols-2 gap-4">
-          <HomeStatCard icon={<img src="/icons/dollar-icon.svg" alt="Ícone de dólar" />} title="Faturamento" value={1234} variant="positive" />
-          <HomeStatCard icon={<img src="/icons/wallet-out-icon.svg" alt="Ícone de despesas" />} title="Despesas" value={600} variant="danger" />
+          <HomeStatCard icon={<img src="/icons/dollar-icon.svg" alt="Ícone de dólar" />} title="Faturamento" value={data?.totalEarnings ?? 0} variant="positive" />
+          <HomeStatCard icon={<img src="/icons/wallet-out-icon.svg" alt="Ícone de despesas" />} title="Despesas" value={data?.totalExpenses ?? 0} variant="danger" />
         </div>
 
         <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) divide-y divide-(--border)">
@@ -40,7 +47,7 @@ export function HomePage() {
               </div>
               <span className="text-sm text-(--text-secondary)">Dias trabalhados em {capitalizedMonth}</span>
             </div>
-            <span className="text-lg font-bold text-(--text-primary)">5</span>
+            <span className="text-lg font-bold text-(--text-primary)">{data?.workedDays ?? 0}</span>
           </div>
 
           <div className="flex items-center justify-between px-4 py-3">
@@ -50,7 +57,7 @@ export function HomePage() {
               </div>
               <span className="text-sm text-(--text-secondary)">KM rodado em {capitalizedMonth}</span>
             </div>
-            <span className="text-lg font-bold text-(--text-primary)">412 km</span>
+            <span className="text-lg font-bold text-(--text-primary)">{data?.totalKm ?? 0}</span>
           </div>
         </div>
 
