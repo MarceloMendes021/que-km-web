@@ -12,6 +12,7 @@ export interface InsightsSummary {
   daysRemainingInMonth: number;
   averageEarningsPerKm: number;
   suggestedMinPerKm: number;
+  totalKm: number;
 }
 
 export async function getMonthlyInsights(month: string) {
