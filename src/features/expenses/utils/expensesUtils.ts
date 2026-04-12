@@ -7,7 +7,7 @@ export type Expense = {
   paymentMethod: PaymentMethod;
 };
 
-export type ExpenseCategory = "fuel" | "maintenance" | "fine" | "car_rental" | "financing" | "insurance" | "other";
+export type ExpenseCategory = "fuel" | "food" | "maintenance" | "fine" | "car_rental" | "financing" | "insurance" | "other";
 
 export type PaymentMethod = "cash" | "debit" | "credit" | "pix" | "other";
 
@@ -21,6 +21,7 @@ export const PAYMENT_METHOD_CONFIG: Record<PaymentMethod, { label: string }> = {
 
 export const CATEGORY_CONFIG: Record<ExpenseCategory, { label: string; color: string }> = {
   fuel: { label: "Combustível", color: "#00a5da" },
+  food: { label: "Alimentação", color: "#fb923c" },
   maintenance: { label: "Manutenção", color: "#F5A623" },
   fine: { label: "Multa", color: "#ff453a" },
   car_rental: { label: "Aluguel do carro", color: "#a78bfa" },
