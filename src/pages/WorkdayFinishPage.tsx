@@ -61,10 +61,12 @@ export function WorkdayFinishPage() {
     }
 
     mutation.mutate({
-      finalOdometer: Number(finalOdometer),
-      earnings: Object.fromEntries(WORKDAY_APPS.map((app) => [app.id, parseFloat(earningInputs[app.id].rawValue || "0")])),
-      fuel: parseFloat(fuelInput.rawValue || "0"),
-      otherExpenses: parseFloat(foodInput.rawValue || "0") + parseFloat(otherExpensesInput.rawValue || "0"),
+      end_odometer: Number(finalOdometer),
+      earnings_uber: parseFloat(earningInputs["uber"].rawValue || "0"),
+      earnings_99: parseFloat(earningInputs["99"].rawValue || "0"),
+      earnings_particular: parseFloat(earningInputs["particular"].rawValue || "0"),
+      expenses_fuel: parseFloat(fuelInput.rawValue || "0"),
+      expenses_other: parseFloat(foodInput.rawValue || "0") + parseFloat(otherExpensesInput.rawValue || "0"),
     });
   }
 

@@ -1,10 +1,12 @@
 import api from "@/services/apiClient";
 
 interface FinishWorkdayData {
-  finalOdometer: number;
-  earnings: Record<string, number>;
-  fuel: number;
-  otherExpenses: number;
+  end_odometer: number;
+  earnings_uber: number;
+  earnings_99: number;
+  earnings_particular: number;
+  expenses_fuel: number;
+  expenses_other: number;
 }
 
 export async function startWorkday(odometer: number) {
@@ -13,7 +15,7 @@ export async function startWorkday(odometer: number) {
 }
 
 export async function finishWorkday(id: string, data: Partial<FinishWorkdayData>) {
-  const response = await api.patch(`/api/workdays/${id}`, data);
+  const response = await api.patch(`/api/workdays/${id}/finish`, data);
   return response.data;
 }
 
