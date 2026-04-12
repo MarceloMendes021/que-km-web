@@ -20,7 +20,6 @@ export function WorkdayFinishPage() {
   const mutation = useMutation({
     mutationFn: (data: Parameters<typeof finishWorkday>[1]) => finishWorkday(workdayId!, data),
     onSuccess: (result) => {
-      console.log("resultado:", result);
       navigate("/workday/result", { state: { result } });
     },
   });
