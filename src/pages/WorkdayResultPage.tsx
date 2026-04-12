@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown, Minus, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
-import type { DayResult } from "@/features/workday/utils/validateWorkdayFinish";
 import { useEffect } from "react";
 import { useWorkdayStore } from "@/features/workday/stores/useWorkdayStore";
 
@@ -11,6 +10,17 @@ type ResultCardProps = {
   label: string;
   value: string;
   variant?: "positive" | "danger" | "default";
+};
+
+type WorkdayResult = {
+  earnings_uber: number;
+  earnings_99: number;
+  earnings_particular: number;
+  expenses_fuel: number;
+  expenses_other: number;
+  expenses_food: number;
+  end_odometer: number;
+  start_odometer: number;
 };
 
 function ResultCard({ label, value, variant = "default" }: ResultCardProps) {
@@ -37,7 +47,7 @@ export function WorkdayResultPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const finishWorkday = useWorkdayStore((s) => s.finishWorkday);
-  const result = location.state?.result as DayResult | undefined;
+  const result = location.state?.result as WorkdayResult | undefined;
 
   useEffect(() => {
     window.history.pushState(null, "", window.location.href);
@@ -55,8 +65,13 @@ export function WorkdayResultPage() {
     return null;
   }
 
-  const isProfit = result.netProfit > 0;
-  const isNeutral = result.netProfit === 0;
+  const totalEarnings = Number(result.earnings_uber) + Number(result.earnings_99) + Number(result.earnings_particular);
+  const totalExpenses = Number(result.expenses_fuel ?? 0) + Number(result.expenses_food ?? 0) + Number(result.expenses_other ?? 0);
+  const netProfit = totalEarnings - totalExpenses;
+  const kmDriven = Number(result.end_odometer) - Number(result.start_odometer);
+  const earningsPerKm = kmDriven > 0 ? totalEarnings / kmDriven : 0;
+  const isProfit = netProfit > 0;
+  const isNeutral = netProfit === 0;
 
   const config = {
     icon: isNeutral ? (
@@ -88,14 +103,14 @@ export function WorkdayResultPage() {
       <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: "easeOut" as const, delay: 0.15 }} className="space-y-3">
         <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-5">
           <p className="text-sm text-(--text-secondary)">Lucro líquido</p>
-          <p className={`mt-1 text-4xl font-bold ${config.profitColor}`}>{formatCurrency(result.netProfit)}</p>
+          <p className={`mt-1 text-4xl font-bold ${config.profitColor}`}>{formatCurrency(netProfit)}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <ResultCard label="Faturamento" value={formatCurrency(result.totalEarnings)} variant="positive" />
-          <ResultCard label="Despesas" value={formatCurrency(result.totalExpenses)} variant="danger" />
-          <ResultCard label="KM rodados" value={`${result.kmDriven.toFixed(0)} km`} />
-          <ResultCard label="Ganho por km" value={`R$ ${result.earningsPerKm.toFixed(2)}`} />
+          <ResultCard label="Faturamento" value={formatCurrency(totalEarnings)} variant="positive" />
+          <ResultCard label="Despesas" value={formatCurrency(totalExpenses)} variant="danger" />
+          <ResultCard label="KM rodados" value={`${kmDriven.toFixed(0)} km`} />
+          <ResultCard label="Ganho por km" value={`R$ ${earningsPerKm.toFixed(2)}`} />
         </div>
       </motion.div>
 

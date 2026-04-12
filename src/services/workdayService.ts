@@ -6,6 +6,7 @@ interface FinishWorkdayData {
   earnings_99: number;
   earnings_particular: number;
   expenses_fuel: number;
+  expenses_food: number;
   expenses_other: number;
 }
 

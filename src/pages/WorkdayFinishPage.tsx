@@ -20,6 +20,7 @@ export function WorkdayFinishPage() {
   const mutation = useMutation({
     mutationFn: (data: Parameters<typeof finishWorkday>[1]) => finishWorkday(workdayId!, data),
     onSuccess: (result) => {
+      console.log("resultado:", result);
       navigate("/workday/result", { state: { result } });
     },
   });
@@ -66,7 +67,8 @@ export function WorkdayFinishPage() {
       earnings_99: parseFloat(earningInputs["99"].rawValue || "0"),
       earnings_particular: parseFloat(earningInputs["particular"].rawValue || "0"),
       expenses_fuel: parseFloat(fuelInput.rawValue || "0"),
-      expenses_other: parseFloat(foodInput.rawValue || "0") + parseFloat(otherExpensesInput.rawValue || "0"),
+      expenses_food: parseFloat(foodInput.rawValue || "0"),
+      expenses_other: parseFloat(otherExpensesInput.rawValue || "0"),
     });
   }
 
