@@ -26,15 +26,23 @@ export function MyJourneyPage() {
   const [saved, setSaved] = useState(false);
   const monthGoalInput = useCurrencyInput();
 
-  const merged = config ? { ...config, ...localConfig } : null;
-
   const mutation = useMutation({
     mutationFn: (data: Partial<JourneyConfig>) => updateJourneyConfig(data),
     onSuccess: () => setSaved(true),
   });
 
   if (isLoading) return <p className="text-center pt-40 text-(--text-secondary)">Carregando...</p>;
-  if (!merged) return null;
+  const merged = config
+    ? { ...config, ...localConfig }
+    : {
+        carModel: "",
+        fuelType: "flex" as FuelType,
+        avgConsumption: 0,
+        monthGoal: 0,
+        plannedDays: 0,
+        minValuePerKm: 0,
+        ...localConfig,
+      };
 
   function handleSave() {
     if (!merged) return;
