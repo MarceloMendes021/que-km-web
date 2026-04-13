@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, User, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSignUp } from "@clerk/clerk-react";
 
 const container = {
   hidden: {},
@@ -21,6 +22,10 @@ const item = {
 };
 
 export function RegisterPage() {
+  const { signUp, isLoaded } = useSignUp();
+
+  const [step, setStep] = useState<"form" | "verify">("form");
+  const [code, setCode] = useState("");
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -73,9 +78,39 @@ export function RegisterPage() {
     return valid;
   }
 
-  function handleRegister() {
+  async function handleRegister() {
+    if (!isLoaded || !signUp) return;
     if (!validate()) return;
-    navigate("/onboarding");
+
+    try {
+      await signUp.create({
+        firstName: form.name,
+        emailAddress: form.email,
+        password: form.password,
+      });
+
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+
+      setStep("verify");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Erro inesperado";
+      setErrors((prev) => ({ ...prev, email: message }));
+    }
+  }
+
+  async function handleVerify() {
+    if (!isLoaded || !signUp) return;
+
+    try {
+      const result = await signUp.attemptEmailAddressVerification({ code });
+
+      if (result.status === "complete") {
+        navigate("/onboarding");
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Erro inesperado";
+      setErrors((prev) => ({ ...prev, email: message }));
+    }
   }
 
   return (
@@ -92,157 +127,187 @@ export function RegisterPage() {
           </button>
         </motion.div>
 
-        <motion.div variants={container} initial="hidden" animate="visible" className="mt-8 flex flex-col gap-1">
-          <motion.h1 variants={item} className="text-2xl font-bold text-(--text-primary)">
-            Criar conta
-          </motion.h1>
+        {step === "verify" ? (
+          <motion.div variants={container} initial="hidden" animate="visible" className="mt-8 flex flex-col gap-6">
+            <motion.h1 variants={item} className="text-2xl font-bold text-(--text-primary)">
+              Verifique seu e-mail
+            </motion.h1>
 
-          <motion.p variants={item} className="text-sm text-(--text-secondary)">
-            Preencha os dados para começar
-          </motion.p>
-
-          <div className="mt-8 flex flex-col gap-3">
-            <motion.div variants={item} className="flex flex-col gap-1">
-              <div className="relative">
-                <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-(--text-secondary) pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder="Seu nome"
-                  value={form.name}
-                  onChange={(e) => handleChange("name", e.target.value)}
-                  className={`h-14 w-full rounded-xl border bg-(--surface) pl-11 pr-4 text-sm text-(--text-primary) outline-none placeholder:text-(--text-secondary) transition-colors ${
-                    errors.name ? "border-(--danger)" : "border-(--border) focus:border-(--primary)"
-                  }`}
-                />
-              </div>
-              <AnimatePresence>
-                {errors.name && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.2 }}
-                    className="pl-1 text-xs text-(--danger)"
-                  >
-                    {errors.name}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </motion.div>
+            <motion.p variants={item} className="text-sm text-(--text-secondary)">
+              Enviamos um código para <span className="text-(--text-primary) font-medium">{form.email}</span>
+            </motion.p>
 
             <motion.div variants={item} className="flex flex-col gap-1">
-              <div className="relative">
-                <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-(--text-secondary) pointer-events-none" />
-                <input
-                  type="email"
-                  placeholder="seu@email.com"
-                  value={form.email}
-                  onChange={(e) => handleChange("email", e.target.value)}
-                  className={`h-14 w-full rounded-xl border bg-(--surface) pl-11 pr-4 text-sm text-(--text-primary) outline-none placeholder:text-(--text-secondary) transition-colors ${
-                    errors.email ? "border-(--danger)" : "border-(--border) focus:border-(--primary)"
-                  }`}
-                />
-              </div>
-              <AnimatePresence>
-                {errors.email && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.2 }}
-                    className="pl-1 text-xs text-(--danger)"
-                  >
-                    {errors.email}
-                  </motion.p>
-                )}
-              </AnimatePresence>
+              <input
+                type="text"
+                inputMode="numeric"
+                placeholder="Cole o código aqui"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                className="h-14 w-full rounded-xl border border-(--border) bg-(--surface) px-4 text-center text-lg tracking-widest text-(--text-primary) outline-none focus:border-(--primary) transition-colors"
+              />
+              {errors.email && <p className="pl-1 text-xs text-(--danger)">{errors.email}</p>}
             </motion.div>
 
-            <motion.div variants={item} className="flex flex-col gap-1">
-              <div className="relative">
-                <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-(--text-secondary) pointer-events-none" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Crie uma senha"
-                  value={form.password}
-                  onChange={(e) => handleChange("password", e.target.value)}
-                  className={`h-14 w-full rounded-xl border bg-(--surface) pl-11 pr-12 text-sm text-(--text-primary) outline-none placeholder:text-(--text-secondary) transition-colors ${
-                    errors.password ? "border-(--danger)" : "border-(--border) focus:border-(--primary)"
-                  }`}
-                />
-                <button
-                  type="button"
-                  aria-label={showPassword ? "Esconder senha" : "Mostrar senha"}
-                  onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-(--text-secondary) hover:text-(--text-primary) transition-colors"
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-              <AnimatePresence>
-                {errors.password && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.2 }}
-                    className="pl-1 text-xs text-(--danger)"
-                  >
-                    {errors.password}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </motion.div>
-
-            <motion.div variants={item} className="flex flex-col gap-1">
-              <div className="relative">
-                <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-(--text-secondary) pointer-events-none" />
-                <input
-                  type={showConfirm ? "text" : "password"}
-                  placeholder="Confirme a senha"
-                  value={form.confirmPassword}
-                  onChange={(e) => handleChange("confirmPassword", e.target.value)}
-                  className={`h-14 w-full rounded-xl border bg-(--surface) pl-11 pr-12 text-sm text-(--text-primary) outline-none placeholder:text-(--text-secondary) transition-colors ${
-                    errors.confirmPassword ? "border-(--danger)" : "border-(--border) focus:border-(--primary)"
-                  }`}
-                />
-                <button
-                  type="button"
-                  aria-label={showConfirm ? "Esconder senha" : "Mostrar senha"}
-                  onClick={() => setShowConfirm((v) => !v)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-(--text-secondary) hover:text-(--text-primary) transition-colors"
-                >
-                  {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-              <AnimatePresence>
-                {errors.confirmPassword && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.2 }}
-                    className="pl-1 text-xs text-(--danger)"
-                  >
-                    {errors.confirmPassword}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </motion.div>
-
-            <motion.div variants={item} className="mt-2">
-              <Button type="button" onClick={handleRegister} className="h-14 w-full rounded-xl bg-(--primary) text-sm font-semibold text-white hover:bg-(--primary)/90">
-                Criar conta
+            <motion.div variants={item}>
+              <Button type="button" onClick={handleVerify} className="h-14 w-full rounded-xl bg-(--primary) text-sm font-semibold text-white hover:bg-(--primary)/90">
+                Confirmar código
               </Button>
             </motion.div>
+          </motion.div>
+        ) : (
+          <motion.div variants={container} initial="hidden" animate="visible" className="mt-8 flex flex-col gap-1">
+            <motion.h1 variants={item} className="text-2xl font-bold text-(--text-primary)">
+              Criar conta
+            </motion.h1>
 
-            <motion.div variants={item} className="text-center">
-              <button type="button" onClick={() => navigate("/login")} className="text-sm text-(--text-secondary)">
-                Já tem conta? <span className="font-semibold text-(--primary)">Entrar</span>
-              </button>
-            </motion.div>
-          </div>
-        </motion.div>
+            <motion.p variants={item} className="text-sm text-(--text-secondary)">
+              Preencha os dados para começar
+            </motion.p>
+
+            <div className="mt-8 flex flex-col gap-3">
+              <motion.div variants={item} className="flex flex-col gap-1">
+                <div className="relative">
+                  <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-(--text-secondary) pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder="Seu nome"
+                    value={form.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                    className={`h-14 w-full rounded-xl border bg-(--surface) pl-11 pr-4 text-sm text-(--text-primary) outline-none placeholder:text-(--text-secondary) transition-colors ${
+                      errors.name ? "border-(--danger)" : "border-(--border) focus:border-(--primary)"
+                    }`}
+                  />
+                </div>
+                <AnimatePresence>
+                  {errors.name && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.2 }}
+                      className="pl-1 text-xs text-(--danger)"
+                    >
+                      {errors.name}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              <motion.div variants={item} className="flex flex-col gap-1">
+                <div className="relative">
+                  <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-(--text-secondary) pointer-events-none" />
+                  <input
+                    type="email"
+                    placeholder="seu@email.com"
+                    value={form.email}
+                    onChange={(e) => handleChange("email", e.target.value)}
+                    className={`h-14 w-full rounded-xl border bg-(--surface) pl-11 pr-4 text-sm text-(--text-primary) outline-none placeholder:text-(--text-secondary) transition-colors ${
+                      errors.email ? "border-(--danger)" : "border-(--border) focus:border-(--primary)"
+                    }`}
+                  />
+                </div>
+                <AnimatePresence>
+                  {errors.email && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.2 }}
+                      className="pl-1 text-xs text-(--danger)"
+                    >
+                      {errors.email}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              <motion.div variants={item} className="flex flex-col gap-1">
+                <div className="relative">
+                  <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-(--text-secondary) pointer-events-none" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Crie uma senha"
+                    value={form.password}
+                    onChange={(e) => handleChange("password", e.target.value)}
+                    className={`h-14 w-full rounded-xl border bg-(--surface) pl-11 pr-12 text-sm text-(--text-primary) outline-none placeholder:text-(--text-secondary) transition-colors ${
+                      errors.password ? "border-(--danger)" : "border-(--border) focus:border-(--primary)"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    aria-label={showPassword ? "Esconder senha" : "Mostrar senha"}
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-(--text-secondary) hover:text-(--text-primary) transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                <AnimatePresence>
+                  {errors.password && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.2 }}
+                      className="pl-1 text-xs text-(--danger)"
+                    >
+                      {errors.password}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              <motion.div variants={item} className="flex flex-col gap-1">
+                <div className="relative">
+                  <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-(--text-secondary) pointer-events-none" />
+                  <input
+                    type={showConfirm ? "text" : "password"}
+                    placeholder="Confirme a senha"
+                    value={form.confirmPassword}
+                    onChange={(e) => handleChange("confirmPassword", e.target.value)}
+                    className={`h-14 w-full rounded-xl border bg-(--surface) pl-11 pr-12 text-sm text-(--text-primary) outline-none placeholder:text-(--text-secondary) transition-colors ${
+                      errors.confirmPassword ? "border-(--danger)" : "border-(--border) focus:border-(--primary)"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    aria-label={showConfirm ? "Esconder senha" : "Mostrar senha"}
+                    onClick={() => setShowConfirm((v) => !v)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-(--text-secondary) hover:text-(--text-primary) transition-colors"
+                  >
+                    {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                <AnimatePresence>
+                  {errors.confirmPassword && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.2 }}
+                      className="pl-1 text-xs text-(--danger)"
+                    >
+                      {errors.confirmPassword}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              <motion.div variants={item} className="mt-2">
+                <Button type="button" onClick={handleRegister} className="h-14 w-full rounded-xl bg-(--primary) text-sm font-semibold text-white hover:bg-(--primary)/90">
+                  Criar conta
+                </Button>
+              </motion.div>
+
+              <motion.div variants={item} className="text-center">
+                <button type="button" onClick={() => navigate("/login")} className="text-sm text-(--text-secondary)">
+                  Já tem conta? <span className="font-semibold text-(--primary)">Entrar</span>
+                </button>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
       </div>
     </main>
   );
