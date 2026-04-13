@@ -43,6 +43,7 @@ export function RegisterPage() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   function handleChange(field: keyof typeof form, value: string) {
@@ -82,6 +83,8 @@ export function RegisterPage() {
     if (!isLoaded || !signUp) return;
     if (!validate()) return;
 
+    setIsSubmitting(true);
+
     try {
       await signUp.create({
         firstName: form.name,
@@ -93,13 +96,18 @@ export function RegisterPage() {
 
       setStep("verify");
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Erro inesperado";
+      const clerkError = err as { errors?: { message: string }[] };
+      const message = clerkError.errors?.[0]?.message ?? "Erro inesperado";
       setErrors((prev) => ({ ...prev, email: message }));
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
   async function handleVerify() {
     if (!isLoaded || !signUp) return;
+
+    setIsSubmitting(true);
 
     try {
       const result = await signUp.attemptEmailAddressVerification({ code });
@@ -108,8 +116,11 @@ export function RegisterPage() {
         navigate("/onboarding");
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Erro inesperado";
+      const clerkError = err as { errors?: { message: string }[] };
+      const message = clerkError.errors?.[0]?.message ?? "Erro inesperado";
       setErrors((prev) => ({ ...prev, email: message }));
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -150,8 +161,13 @@ export function RegisterPage() {
             </motion.div>
 
             <motion.div variants={item}>
-              <Button type="button" onClick={handleVerify} className="h-14 w-full rounded-xl bg-(--primary) text-sm font-semibold text-white hover:bg-(--primary)/90">
-                Confirmar código
+              <Button
+                type="button"
+                onClick={handleVerify}
+                disabled={isSubmitting}
+                className="h-14 w-full rounded-xl bg-(--primary) text-sm font-semibold text-white hover:bg-(--primary)/90"
+              >
+                {isSubmitting ? "Aguarde..." : "Confirmar código"}
               </Button>
             </motion.div>
           </motion.div>
@@ -295,8 +311,13 @@ export function RegisterPage() {
               </motion.div>
 
               <motion.div variants={item} className="mt-2">
-                <Button type="button" onClick={handleRegister} className="h-14 w-full rounded-xl bg-(--primary) text-sm font-semibold text-white hover:bg-(--primary)/90">
-                  Criar conta
+                <Button
+                  type="button"
+                  onClick={handleRegister}
+                  disabled={isSubmitting}
+                  className="h-14 w-full rounded-xl bg-(--primary) text-sm font-semibold text-white hover:bg-(--primary)/90"
+                >
+                  {isSubmitting ? "Aguarde..." : "Criar conta"}
                 </Button>
               </motion.div>
 
