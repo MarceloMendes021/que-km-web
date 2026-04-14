@@ -26,9 +26,9 @@ export function InsightsPage() {
     { name: "Despesas", value: data.totalExpenses },
   ];
 
-  const goalProgress = Math.min((data.netProfit / data.monthGoal) * 100, 100);
+  const goalProgress = data.monthGoal > 0 ? Math.min((data.netProfit / data.monthGoal) * 100, 100) : 0;
   const projectedProfit = data.averageProfitPerDay * (data.workedDays + data.daysRemainingInMonth);
-  const utilizationRate = Math.round((data.workedDays / data.plannedDays) * 100);
+  const utilizationRate = data.plannedDays > 0 ? Math.round((data.workedDays / data.plannedDays) * 100) : 0;
 
   return (
     <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
@@ -40,7 +40,8 @@ export function InsightsPage() {
         <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-5">
           <p className="text-sm font-medium text-(--text-primary)">Lucro vs Despesas</p>
           <p className="text-xs text-(--text-secondary) mt-1">
-            Despesas representam <span className="text-(--danger) font-semibold">{Math.round((data.totalExpenses / data.totalEarnings) * 100)}%</span> do seu faturamento
+            Despesas representam <span className="text-(--danger) font-semibold">{data.totalEarnings > 0 ? Math.round((data.totalExpenses / data.totalEarnings) * 100) : 0}%</span>{" "}
+            do seu faturamento
           </p>
 
           <ResponsiveContainer width="100%" height={200}>
