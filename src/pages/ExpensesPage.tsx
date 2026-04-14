@@ -106,6 +106,7 @@ export function ExpensesPage() {
         {filteredExpenses.length > 0 && (
           <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) divide-y divide-(--border)">
             {filteredExpenses.map((expense: Expense) => {
+              const dateStr = expense.date.split("T")[0];
               const config = CATEGORY_CONFIG[expense.category] ?? { label: expense.category, color: "#666" };
               return (
                 <div key={expense.id} className="flex items-center justify-between px-4 py-4">
@@ -113,8 +114,9 @@ export function ExpensesPage() {
                     <div className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: config.color }} />
                     <div className="flex flex-col">
                       <span className="text-sm text-(--text-primary)">{expense.description}</span>
+
                       <span className="text-xs text-(--text-secondary)">
-                        {config.label} · {new Date(expense.date + "T00:00:00").toLocaleDateString("pt-BR")}
+                        {config.label} · {new Date(dateStr + "T00:00:00").toLocaleDateString("pt-BR")}
                       </span>
                     </div>
                   </div>
