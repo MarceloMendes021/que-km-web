@@ -5,10 +5,10 @@ import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { PageHeader } from "@/shared/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getProfile, updateProfile, type UserProfile } from "@/services/profileService";
+import { getProfile, updateProfile, type UserProfile, type UpdateProfilePayload } from "@/services/profileService";
 
 export function ProfilePage() {
-  const { data: profileData } = useQuery({
+  const { data: profileData, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
   });
@@ -16,20 +16,30 @@ export function ProfilePage() {
   const [form, setForm] = useState<UserProfile | null>(null);
 
   const mutation = useMutation({
-    mutationFn: (data: Partial<UserProfile>) => updateProfile(data),
+    mutationFn: (data: UpdateProfilePayload) => updateProfile(data),
     onSuccess: () => setSaved(true),
   });
 
   const [saved, setSaved] = useState(false);
 
   const currentForm = form ?? profileData ?? null;
+
+  if (isLoading)
+    return (
+      <main className="min-h-dvh bg-(--background) flex items-center justify-center">
+        <p className="text-sm text-(--text-secondary)">Carregando...</p>
+      </main>
+    );
   if (!currentForm) return null;
 
   const initial = currentForm.displayName?.charAt(0).toUpperCase() || "?";
 
   function handleSave() {
     if (!form) return;
-    mutation.mutate(form);
+    mutation.mutate({
+      display_name: form.displayName,
+      phone: form.phone,
+    });
   }
 
   return (

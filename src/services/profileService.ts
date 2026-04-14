@@ -11,7 +11,11 @@ export async function getProfile() {
   return response.data;
 }
 
-export async function updateProfile(data: Partial<UserProfile>) {
+export async function updateProfile(data: UpdateProfilePayload) {
   const response = await api.patch("/api/profile", data);
   return response.data;
+}
+export interface UpdateProfilePayload {
+  display_name?: string;
+  phone?: string | null;
 }
