@@ -15,6 +15,13 @@ export function LoginPage() {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const CLERK_ERRORS: Record<string, string> = {
+    "Invalid verification code": "Código inválido.",
+    "Password is incorrect": "Senha incorreta.",
+    "identifier already exists": "E-mail já cadastrado.",
+    "is invalid": "E-mail inválido.",
+  };
+
   if (!isLoaded || !signIn) return null;
 
   function handleChange(field: "email" | "password", value: string) {
@@ -35,7 +42,9 @@ export function LoginPage() {
       }
     } catch (err: unknown) {
       const clerkError = err as { errors?: { message: string }[] };
-      setError(clerkError.errors?.[0]?.message ?? "Erro ao entrar");
+      const raw = clerkError.errors?.[0]?.message ?? "";
+      const translated = Object.entries(CLERK_ERRORS).find(([key]) => raw.includes(key))?.[1] ?? "Erro ao entrar. Tente novamente.";
+      setError(translated);
     } finally {
       setIsSubmitting(false);
     }
@@ -50,11 +59,7 @@ export function LoginPage() {
   }
 
   function handleSocialLoginApple() {
-    signIn!.authenticateWithRedirect({
-      strategy: "oauth_apple",
-      redirectUrl: "/sso-callback",
-      redirectUrlComplete: "/",
-    });
+    setError("Login com Apple em breve.");
   }
 
   return (
@@ -130,10 +135,11 @@ export function LoginPage() {
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
-                  {error && <p className="pl-1 text-xs text-(--danger)">{error}</p>}
                 </motion.div>
               )}
             </AnimatePresence>
+
+            {error && <p className="pl-1 text-xs text-(--danger)">{error}</p>}
 
             <Button
               type="button"
