@@ -7,24 +7,38 @@ import { Button } from "@/components/ui/button";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { signIn, isLoaded } = useSignIn();
+  const { signIn, isLoaded, setActive } = useSignIn();
 
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isLoaded || !signIn) return null;
 
   function handleChange(field: "email" | "password", value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
+    setError("");
   }
 
   async function handleEmailLogin() {
-    await signIn!.create({
-      identifier: form.email,
-      password: form.password,
-    });
-    navigate("/");
+    try {
+      setIsSubmitting(true);
+      const result = await signIn!.create({
+        identifier: form.email,
+        password: form.password,
+      });
+      if (result.status === "complete") {
+        await setActive!({ session: result.createdSessionId });
+        navigate("/");
+      }
+    } catch (err: unknown) {
+      const clerkError = err as { errors?: { message: string }[] };
+      setError(clerkError.errors?.[0]?.message ?? "Erro ao entrar");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function handleSocialLoginGoogle() {
@@ -116,6 +130,7 @@ export function LoginPage() {
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
+                  {error && <p className="pl-1 text-xs text-(--danger)">{error}</p>}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -123,9 +138,10 @@ export function LoginPage() {
             <Button
               type="button"
               onClick={showEmailForm ? handleEmailLogin : () => setShowEmailForm(true)}
+              disabled={isSubmitting}
               className="h-14 w-full rounded-xl bg-(--primary) text-sm font-semibold text-white hover:bg-(--primary)/90"
             >
-              {showEmailForm ? "Entrar" : "Entrar com e-mail"}
+              {showEmailForm && isSubmitting ? "Aguarde..." : showEmailForm ? "Entrar" : "Entrar com e-mail"}
             </Button>
 
             {showEmailForm && (
