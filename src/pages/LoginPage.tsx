@@ -5,6 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+const CLERK_ERRORS: Record<string, string> = {
+  "Invalid verification code": "Código inválido.",
+  "Password is incorrect": "Senha incorreta.",
+  "identifier already exists": "E-mail já cadastrado.",
+  "is invalid": "E-mail inválido.",
+};
+
 export function LoginPage() {
   const navigate = useNavigate();
   const { signIn, isLoaded, setActive } = useSignIn();
@@ -14,13 +21,6 @@ export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const CLERK_ERRORS: Record<string, string> = {
-    "Invalid verification code": "Código inválido.",
-    "Password is incorrect": "Senha incorreta.",
-    "identifier already exists": "E-mail já cadastrado.",
-    "is invalid": "E-mail inválido.",
-  };
 
   if (!isLoaded || !signIn) return null;
 
