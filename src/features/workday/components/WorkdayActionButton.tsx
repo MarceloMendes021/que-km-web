@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Play, Square } from "lucide-react";
+import { CirclePause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type WorkdayActionButtonProps = {
@@ -20,7 +20,15 @@ export function WorkdayActionButton({ workdayStarted }: WorkdayActionButtonProps
           <span className="text-xs text-(--text-primary)">{description}</span>
         </div>
 
-        {workdayStarted ? <Square className="h-6! w-6! mr-2" /> : <Play className="h-7! w-7! mr-2" />}
+        {workdayStarted ? (
+          <div className="h-9 w-9 mr-2 bg-black rounded-full flex items-center justify-center">
+            <CirclePause className="h-7! w-7! text-(--danger)" />
+          </div>
+        ) : (
+          <div className="h-9 w-9 mr-2 bg-(--text-primary) rounded-full flex items-center justify-center">
+            <Play className="h-6! w-6! text-(--primary) " />{" "}
+          </div>
+        )}
       </Link>
     </Button>
   );
