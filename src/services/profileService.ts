@@ -6,9 +6,14 @@ export interface UserProfile {
   phone: string | null;
 }
 
-export async function getProfile() {
+export async function getProfile(): Promise<UserProfile> {
   const response = await api.get("/api/profile");
-  return response.data;
+  const data = response.data;
+  return {
+    displayName: data.display_name,
+    avatarUrl: data.avatar_url,
+    phone: data.phone,
+  };
 }
 
 export async function updateProfile(data: UpdateProfilePayload) {

@@ -12,7 +12,7 @@ export function UserMenu() {
 
   const { user } = useUser();
   const { signOut } = useClerk();
-  const userName = user?.fullName ?? "Usuário";
+  const userName = user?.firstName ?? "Usuário";
   const userInitials = userName.slice(0, 2).toUpperCase();
 
   return (

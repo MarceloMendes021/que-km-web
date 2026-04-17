@@ -4,8 +4,9 @@ import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { PageHeader } from "@/shared/layout/PageHeader";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getProfile, updateProfile, type UserProfile, type UpdateProfilePayload } from "@/services/profileService";
+import { useUser } from "@clerk/clerk-react";
 
 export function ProfilePage() {
   const { data: profileData, isLoading } = useQuery({
@@ -13,11 +14,21 @@ export function ProfilePage() {
     queryFn: getProfile,
   });
 
+  const { user } = useUser();
+
   const [form, setForm] = useState<UserProfile | null>(null);
+
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (data: UpdateProfilePayload) => updateProfile(data),
-    onSuccess: () => setSaved(true),
+    onSuccess: async () => {
+      setSaved(true);
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      if (form?.displayName) {
+        await user?.update({ firstName: form.displayName });
+      }
+    },
   });
 
   const [saved, setSaved] = useState(false);
