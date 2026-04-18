@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
 import { PageHeader } from "@/shared/layout/PageHeader";
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, LabelList } from "recharts";
 import { History, Target, TrendingUp, Zap, Award, BarChart2 } from "lucide-react";
 import { formatCurrency } from "@/shared/utils/formatCurrency";
 import { useQuery } from "@tanstack/react-query";
@@ -69,7 +69,7 @@ export function InsightsPage() {
         <div className="rounded-(--radius-card) border border-(--border) bg-(--surface) px-6 py-5">
           <p className="text-sm font-medium text-(--text-primary)">Faturamento por app</p>
 
-          <ResponsiveContainer width="100%" height={160}>
+          <ResponsiveContainer width="100%" height={180}>
             <BarChart data={data.earningsByApp} margin={{ top: 16, right: 0, left: -20, bottom: 0 }}>
               <XAxis dataKey="app" tick={{ fill: "#9ba1a6", fontSize: 12 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: "#9ba1a6", fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -77,6 +77,7 @@ export function InsightsPage() {
                 {data.earningsByApp.map((_: { app: string; value: number }, index: number) => (
                   <Cell key={index} fill={BAR_COLORS[index % BAR_COLORS.length]} />
                 ))}
+                <LabelList dataKey="value" position="top" formatter={(value: unknown) => `R$ ${Number(value).toFixed(0)}`} style={{ fill: "#9ba1a6", fontSize: 11 }} />
               </Bar>
             </BarChart>
           </ResponsiveContainer>
@@ -139,17 +140,17 @@ export function InsightsPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-(--text-secondary)">Sua média atual</p>
-              <p className="text-xl font-bold text-(--danger)">R$ {data.averageEarningsPerKm.toFixed(2)}/km</p>
+              <p className="text-xl font-bold text-(--danger)">R$ {(data.averageEarningsPerKm ?? 0).toFixed(2)}/km</p>
             </div>
             <div className="text-right">
               <p className="text-xs text-(--text-secondary)">Sugerido</p>
-              <p className="text-xl font-bold text-(--secondary)">R$ {data.suggestedMinPerKm.toFixed(2)}/km</p>
+              <p className="text-xl font-bold text-(--secondary)">R$ {(data.suggestedMinPerKm ?? 0).toFixed(2)}/km</p>
             </div>
           </div>
 
           <p className="mt-3 text-xs text-(--text-secondary)">
             Para cobrir suas despesas com mais folga, tente aceitar corridas acima de{" "}
-            <span className="text-(--secondary) font-semibold">R$ {data.suggestedMinPerKm.toFixed(2)}/km</span>.
+            <span className="text-(--secondary) font-semibold">R$ {(data.suggestedMinPerKm ?? 0).toFixed(2)}/km</span>.
           </p>
         </div>
 
