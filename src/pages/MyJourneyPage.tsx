@@ -6,7 +6,7 @@ import { PageHeader } from "@/shared/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { useCurrencyInput } from "@/shared/hooks/useCurrencyInput";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getJourneyConfig, updateJourneyConfig, type JourneyConfig, type FuelType } from "@/services/journeyConfigService";
+import { getJourneyConfig, updateJourneyConfig, type JourneyConfigPayload, type FuelType } from "@/services/journeyConfigService";
 
 const FUEL_OPTIONS: { value: FuelType; label: string }[] = [
   { value: "gasolina", label: "Gasolina" },
@@ -22,12 +22,12 @@ export function MyJourneyPage() {
     queryFn: getJourneyConfig,
   });
 
-  const [localConfig, setLocalConfig] = useState<Partial<JourneyConfig>>({});
+  const [localConfig, setLocalConfig] = useState<Partial<JourneyConfigPayload>>({});
   const [saved, setSaved] = useState(false);
   const monthGoalInput = useCurrencyInput();
 
   const mutation = useMutation({
-    mutationFn: (data: Partial<JourneyConfig>) => updateJourneyConfig(data),
+    mutationFn: (data: Partial<JourneyConfigPayload>) => updateJourneyConfig(data),
     onSuccess: () => setSaved(true),
   });
 
@@ -45,8 +45,18 @@ export function MyJourneyPage() {
       };
 
   function handleSave() {
-    if (!merged) return;
-    mutation.mutate(merged);
+    try {
+      mutation.mutate({
+        car_model: merged.carModel,
+        fuel_type: merged.fuelType,
+        avg_consumption: merged.avgConsumption,
+        month_goal: parseFloat(monthGoalInput.rawValue) || 0,
+        planned_days: merged.plannedDays,
+        min_value_per_km: merged.minValuePerKm,
+      });
+    } catch (error) {
+      console.error("Erro ao salvar:", error);
+    }
   }
   return (
     <main className="min-h-dvh bg-(--background) pt-24 pb-28 text-(--text-primary)">
@@ -82,7 +92,7 @@ export function MyJourneyPage() {
               <div className="flex flex-col gap-1 flex-1">
                 <span className="text-xs text-(--text-secondary)">Tipo de combustível</span>
                 <select
-                  value={merged.fuelType}
+                  value={merged.fuelType ?? "flex"}
                   onChange={(e) => setLocalConfig((prev) => ({ ...prev, fuelType: e.target.value as FuelType }))}
                   className="bg-transparent text-sm font-medium text-(--text-primary) outline-none"
                 >
