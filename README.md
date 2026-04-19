@@ -27,8 +27,8 @@ Funciona como PWA instalável, orientação retrato, sem precisar de loja de app
 ## Preview
 
 <div align="center">
-  <img src="docs/mockup-login.png" width="700" />
-  <img src="docs/mockup-home.png" width="700" />
+  <img src="docs/mockup-login.png" width="350" />
+  <img src="docs/mockup-home.png" width="350" />
 </div>
 
 <div align="center">
@@ -37,13 +37,15 @@ Funciona como PWA instalável, orientação retrato, sem precisar de loja de app
 </div>
 
 <div align="center">
-  <img src="docs/mockup-despesas-insights.png" width="700" />
+  <img src="docs/mockup-despesas-insights.png" width="600" />
 </div>
 ---
 
 ## Diagrama de Fluxo
 
-![Diagrama de fluxo](docs/diagrama-fluxo.png)
+<div align="center">
+  <img src="docs/diagrama-fluxo.png" width="400" />
+</div>
 
 ## Funcionalidades
 
