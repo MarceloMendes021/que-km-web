@@ -44,7 +44,7 @@ Funciona como PWA instalável, orientação retrato, sem precisar de loja de app
 ## Diagrama de Fluxo
 
 <div align="center">
-  <img src="docs/diagrama-fluxo.png" width="400" />
+  <img src="docs/diagrama-fluxo.png" width="600" />
 </div>
 
 ## Funcionalidades
