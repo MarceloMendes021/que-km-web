@@ -62,7 +62,7 @@ export function UserMenu() {
 
         <DropdownMenuItem className="flex items-center gap-3 py-2 text-(--text-secondary)">
           <Info className="h-4 w-4" />
-          Versão 1.0.0
+          Versão {__APP_VERSION__}
         </DropdownMenuItem>
 
         <DropdownMenuSeparator className="mt-2" />
