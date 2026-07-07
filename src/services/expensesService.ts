@@ -12,7 +12,7 @@ export async function addExpense(data: Omit<Expense, "id">) {
   return response.data;
 }
 
-export async function deleteExpenses(id: string) {
+export async function deleteExpense(id: string) {
   const response = await api.delete(`/api/expenses/${id}`);
   return response.data;
 }
