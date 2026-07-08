@@ -18,3 +18,10 @@ createRoot(document.getElementById("root")!).render(
     </ClerkProvider>
   </StrictMode>,
 );
+setTimeout(() => {
+  const splash = document.getElementById("splash");
+  if (splash) {
+    splash.classList.add("hidden");
+    setTimeout(() => splash.remove(), 400);
+  }
+}, 2000);
