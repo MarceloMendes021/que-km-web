@@ -14,11 +14,10 @@ import { finishWorkday } from "@/services/workdayService";
 
 export function WorkdayFinishPage() {
   const navigate = useNavigate();
-
   const workdayId = useWorkdayStore((s) => s.workdayId);
 
   const mutation = useMutation({
-    mutationFn: (data: Parameters<typeof finishWorkday>[1]) => finishWorkday(workdayId!, data),
+    mutationFn: (data: Parameters<typeof finishWorkday>[1]) => finishWorkday(workdayId as string, data),
     onSuccess: (result) => {
       navigate("/workday/result", { state: { result } });
     },
@@ -42,6 +41,11 @@ export function WorkdayFinishPage() {
     finalOdometer?: string;
     earnings?: string;
   }>({});
+
+  if (!workdayId) {
+    navigate("/");
+    return null;
+  }
 
   const mainApps = WORKDAY_APPS.filter((app) => app.id !== "particular");
   const particularApp = WORKDAY_APPS.find((app) => app.id === "particular");
