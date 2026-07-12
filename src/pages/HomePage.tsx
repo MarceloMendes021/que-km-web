@@ -8,18 +8,22 @@ import { getCurrentMonth, getCurrentMonthParam } from "@/shared/utils/getCurrent
 import { useWorkdayStore } from "@/features/workday/stores/useWorkdayStore";
 import { useQuery } from "@tanstack/react-query";
 import { getMonthlyInsights } from "@/services/insightsService";
+import { useUser } from "@clerk/clerk-react";
 
-function getGreeting(name: string): string {
+function getGreeting(userName: string) {
   const hour = new Date().getHours();
 
-  if (hour >= 5 && hour < 12) return `Olá, ${name}! Bom dia.`;
-  if (hour >= 12 && hour < 18) return `Olá, ${name}! Boa tarde.`;
-  return `Olá, ${name}! Boa noite.`;
+  if (hour >= 5 && hour < 12) return `Olá, ${userName}! Bom dia.`;
+  if (hour >= 12 && hour < 18) return `Olá, ${userName}! Boa tarde.`;
+  return `Olá, ${userName}! Boa noite.`;
 }
 
 const capitalizedMonth = getCurrentMonth();
 
 export function HomePage() {
+  const { user } = useUser();
+  const userName = user?.firstName ?? "Motorista";
+
   const { data } = useQuery({
     queryKey: ["insights"],
     queryFn: () => getMonthlyInsights(getCurrentMonthParam()),
@@ -30,7 +34,7 @@ export function HomePage() {
     <main className="fixed inset-0 bg-(--background) pt-24 pb-28 text-(--text-primary)">
       <AppHeader />
       <section className="h-full overflow-hidden mt-4 px-4 space-y-4">
-        <p className="text-lg font-semibold text-(--text-primary)">{getGreeting("Marcelo")}</p>
+        <p className="text-lg font-semibold text-(--text-primary)">{getGreeting(userName)}</p>
 
         <MonthSummaryCard amount={data?.netProfit ?? 0} trend="positive" />
 
