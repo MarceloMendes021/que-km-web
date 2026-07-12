@@ -28,7 +28,10 @@ export function MyJourneyPage() {
 
   const mutation = useMutation({
     mutationFn: (data: Partial<JourneyConfigPayload>) => updateJourneyConfig(data),
-    onSuccess: () => setSaved(true),
+    onSuccess: () => {
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    },
   });
 
   if (isLoading) return <p className="text-center pt-40 text-(--text-secondary)">Carregando...</p>;
@@ -47,12 +50,12 @@ export function MyJourneyPage() {
   function handleSave() {
     try {
       mutation.mutate({
-        car_model: merged.carModel,
-        fuel_type: merged.fuelType,
-        avg_consumption: merged.avgConsumption,
+        car_model: merged.carModel || "Automóvel",
+        fuel_type: merged.fuelType || "flex",
+        avg_consumption: merged.avgConsumption || 10,
         month_goal: parseFloat(monthGoalInput.rawValue) || 0,
-        planned_days: merged.plannedDays,
-        min_value_per_km: merged.minValuePerKm,
+        planned_days: merged.plannedDays || 22,
+        min_value_per_km: merged.minValuePerKm || 1.3,
       });
     } catch (error) {
       console.error("Erro ao salvar:", error);
@@ -167,7 +170,7 @@ export function MyJourneyPage() {
                   inputMode="numeric"
                   placeholder="22"
                   value={merged.plannedDays || ""}
-                  onChange={(e) => setLocalConfig((prev) => ({ ...prev, plannedDays: parseInt(e.target.value) || 0 }))}
+                  onChange={(e) => setLocalConfig((prev) => ({ ...prev, plannedDays: parseInt(e.target.value) || 22 }))}
                   onKeyDown={(e) => {
                     if (["e", "E", "+", "-", "."].includes(e.key)) e.preventDefault();
                   }}
