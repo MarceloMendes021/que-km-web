@@ -25,5 +25,15 @@ export function useCurrencyInput(initialValue = "") {
     setRawValue(String(cents / 100));
   }
 
-  return { displayValue, rawValue, handleChange };
+  function setValue(value: number) {
+    if (!value) {
+      setDisplayValue("");
+      setRawValue("");
+      return;
+    }
+    setDisplayValue(formatDisplay(value * 100));
+    setRawValue(String(value));
+  }
+
+  return { displayValue, rawValue, handleChange, setValue };
 }

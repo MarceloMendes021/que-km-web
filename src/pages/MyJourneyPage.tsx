@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Car, Fuel, Gauge, Target, Calendar, TrendingUp } from "lucide-react";
 import { AppHeader } from "@/shared/layout/AppHeader";
 import { BottomTabBar } from "@/shared/layout/BottomTabBar";
@@ -24,7 +24,14 @@ export function MyJourneyPage() {
 
   const [localConfig, setLocalConfig] = useState<Partial<JourneyConfigPayload>>({});
   const [saved, setSaved] = useState(false);
+
   const monthGoalInput = useCurrencyInput();
+  useEffect(() => {
+    if (config?.monthGoal != null) {
+      monthGoalInput.setValue(config.monthGoal);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [config]);
 
   const mutation = useMutation({
     mutationFn: (data: Partial<JourneyConfigPayload>) => updateJourneyConfig(data),
