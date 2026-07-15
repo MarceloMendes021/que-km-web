@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Car, Fuel, Target, TrendingUp, ChevronRight, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCurrencyInput } from "@/shared/hooks/useCurrencyInput";
-
+import { updateJourneyConfig } from "@/services/journeyConfigService";
+import { useMutation } from "@tanstack/react-query";
 import type { FuelType } from "@/services/journeyConfigService";
 
 const FUEL_OPTIONS: { value: FuelType; label: string }[] = [
@@ -35,6 +36,13 @@ export function OnboardingPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const monthGoalInput = useCurrencyInput();
+
+  const mutation = useMutation({
+    mutationFn: updateJourneyConfig,
+    onSuccess: () => {
+      navigate("/");
+    },
+  });
 
   function validateStep() {
     const newErrors: Record<string, string> = {};
@@ -71,7 +79,14 @@ export function OnboardingPage() {
       return;
     }
 
-    navigate("/");
+    mutation.mutate({
+      car_model: form.carModel,
+      fuel_type: form.fuelType,
+      avg_consumption: parseFloat(form.avgConsumption),
+      month_goal: parseFloat(monthGoalInput.rawValue),
+      planned_days: parseInt(form.plannedDays),
+      min_value_per_km: parseFloat(form.minValuePerKm),
+    });
   }
 
   function handleBack() {
@@ -257,10 +272,15 @@ export function OnboardingPage() {
           <Button
             type="button"
             onClick={handleNext}
+            disabled={mutation.isPending}
             className="h-14 w-full rounded-xl bg-(--primary) text-sm font-semibold text-white hover:bg-(--primary)/90 flex items-center justify-center gap-2"
           >
             {step === STEPS.length - 1 ? (
-              "Começar a usar"
+              mutation.isPending ? (
+                "Salvando..."
+              ) : (
+                "Começar a usar"
+              )
             ) : (
               <>
                 Próximo <ChevronRight size={18} />
