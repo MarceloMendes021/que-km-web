@@ -9,6 +9,14 @@ interface FinishWorkdayData {
   expenses_food: number;
   expenses_other: number;
 }
+interface UpdateWorkdayData {
+  earnings_uber?: number;
+  earnings_99?: number;
+  earnings_particular?: number;
+  expenses_fuel?: number;
+  expenses_food?: number;
+  expenses_other?: number;
+}
 
 export async function startWorkday(odometer: number) {
   const response = await api.post("/api/workdays", { start_odometer: odometer });
@@ -22,5 +30,10 @@ export async function finishWorkday(id: string, data: Partial<FinishWorkdayData>
 
 export async function getActiveWorkday() {
   const response = await api.get("/api/workdays/active");
+  return response.data;
+}
+
+export async function updateWorkday(id: string, data: UpdateWorkdayData) {
+  const response = await api.patch(`/api/workdays/${id}`, data);
   return response.data;
 }

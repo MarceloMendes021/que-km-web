@@ -1,4 +1,4 @@
-import { Calculator, House, Wallet, BarChart2 } from "lucide-react";
+import { House, Wallet, BarChart2, History } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const tabs = [
@@ -13,9 +13,9 @@ const tabs = [
     icon: BarChart2,
   },
   {
-    to: "/km-calculator",
-    label: "Calculadora",
-    icon: Calculator,
+    to: "/history",
+    label: "Histórico",
+    icon: History,
   },
   {
     to: "/expenses",

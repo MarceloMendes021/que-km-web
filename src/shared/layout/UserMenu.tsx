@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { User, Briefcase, HelpCircle, Info, LogOut } from "lucide-react";
+import { User, Briefcase, HelpCircle, Info, LogOut, Calculator } from "lucide-react";
 import { useUser, useClerk } from "@clerk/clerk-react";
 
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
@@ -41,6 +41,13 @@ export function UserMenu() {
           <Link to="/profile" className="flex items-center gap-3 py-2">
             <User className="h-4 w-4" />
             Perfil
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link to="/km-calculator" className="flex items-center gap-3 py-2">
+            <Calculator className="h-4 w-4" />
+            Calculadora
           </Link>
         </DropdownMenuItem>
 

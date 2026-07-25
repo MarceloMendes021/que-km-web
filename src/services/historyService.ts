@@ -1,6 +1,6 @@
 import api from "@/services/apiClient";
-import type { WorkdayHistory } from "@/features/history/utils/historyUtils";
 import { calculateWorkdayMetrics } from "@/features/history/utils/historyUtils";
+import type { WorkdayHistory } from "@/features/history/utils/historyUtils";
 
 interface WorkdayRaw {
   id: string;
@@ -11,6 +11,7 @@ interface WorkdayRaw {
   earnings_99: number | string;
   earnings_particular: number | string;
   expenses_fuel?: number | string;
+  expenses_food?: number | string;
   expenses_other?: number | string;
 }
 
@@ -27,6 +28,7 @@ export async function getWorkdayHistory(month: string) {
       particular: Number(w.earnings_particular) || 0,
     },
     fuel: Number(w.expenses_fuel) || 0,
+    food: Number(w.expenses_food) || 0,
     otherExpenses: Number(w.expenses_other) || 0,
   }));
 }
